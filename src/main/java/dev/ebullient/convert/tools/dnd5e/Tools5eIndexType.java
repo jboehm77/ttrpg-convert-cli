@@ -505,6 +505,7 @@ public enum Tools5eIndexType implements IndexType, JsonNodeReader {
                     race,
                     reward,
                     spell,
+                    subrace,
                     trap,
                     vehicle ->
                 true;
