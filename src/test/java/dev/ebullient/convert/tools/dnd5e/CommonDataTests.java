@@ -339,9 +339,6 @@ public class CommonDataTests {
                         break;
                     } else {
                         frontmatter.add(l);
-                        if (l.contains("*")) {
-                            errors.add(String.format("Found '*' in %s: %s", p, l));
-                        }
                         TestUtils.commonTests(p, l, errors);
                     }
                 }

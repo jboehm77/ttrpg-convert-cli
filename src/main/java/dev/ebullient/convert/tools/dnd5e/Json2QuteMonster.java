@@ -1,6 +1,7 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.pluralize;
+import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +91,7 @@ public class Json2QuteMonster extends Json2QuteCommon {
                 linkifier().decoratedName(type, rootNode),
                 getSourceText(sources),
                 isNpc,
-                size, creatureType, subtype, monsterAlignment(),
+                size, uppercaseFirst(creatureType), uppercaseFirst(subtype), monsterAlignment(),
                 acHp,
                 speed(Tools5eFields.speed.getFrom(rootNode)),
                 abilityScores,

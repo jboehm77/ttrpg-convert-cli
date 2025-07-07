@@ -4,6 +4,7 @@ import static dev.ebullient.convert.StringUtil.asModifier;
 import static dev.ebullient.convert.StringUtil.joinConjunct;
 import static dev.ebullient.convert.StringUtil.pluralize;
 import static dev.ebullient.convert.StringUtil.toTitleCase;
+import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,9 +46,9 @@ public class QuteMonster extends Tools5eQuteBase {
     public final boolean isNpc;
     /** Creature size (capitalized) */
     public final String size;
-    /** Creature type (lowercase) */
+    /** Creature type (capitalized) */
     public final String type;
-    /** Creature subtype (lowercase) */
+    /** Creature subtype (capitalized) */
     public final String subtype;
     /** Creature alignment */
     public final String alignment;
@@ -403,16 +404,16 @@ public class QuteMonster extends Tools5eQuteBase {
         addUnlessEmpty(map, "damage_resistances", immuneResist.resist);
         addUnlessEmpty(map, "damage_immunities", immuneResist.immune);
         addUnlessEmpty(map, "condition_immunities", immuneResist.conditionImmune);
-        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "passive Perception " + passive);
+        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "Passive Perception " + passive);
         map.put("languages", languages);
         addUnlessEmpty(map, "cr", cr);
 
-        addUnlessEmpty(map, "traits", traitsFrom(allTraits.traits()));
-        addUnlessEmpty(map, "actions", traitsFrom(allTraits.actions()));
-        addUnlessEmpty(map, "bonus_actions", traitsFrom(allTraits.bonusActions()));
-        addUnlessEmpty(map, "reactions", traitsFrom(allTraits.reactions()));
-        addUnlessEmpty(map, "lair_actions", traitsFrom(allTraits.lairActions()));
-        addUnlessEmpty(map, "regional_effects", traitsFrom(allTraits.regionalEffects()));
+        addUnlessEmpty(map, "traits", punctuateTraitNames(traitsFrom(allTraits.traits())));
+        addUnlessEmpty(map, "actions", punctuateTraitNames(traitsFrom(allTraits.actions())));
+        addUnlessEmpty(map, "bonus_actions", punctuateTraitNames(traitsFrom(allTraits.bonusActions())));
+        addUnlessEmpty(map, "reactions", punctuateTraitNames(traitsFrom(allTraits.reactions())));
+        addUnlessEmpty(map, "lair_actions", punctuateTraitNames(traitsFrom(allTraits.lairActions())));
+        addUnlessEmpty(map, "regional_effects", punctuateTraitNames(traitsFrom(allTraits.regionalEffects())));
 
         TraitDescription legendary = allTraits.legendaryActions();
         if (isPresent(legendary)) {
@@ -452,6 +453,22 @@ public class QuteMonster extends Tools5eQuteBase {
             }
         }
         return "";
+    }
+
+    private List<NamedText> punctuateTraitNames(List<NamedText> traits) {
+        if (traits.isEmpty()) {
+            return traits;
+        }
+        List<NamedText> namedTraits = new ArrayList<>();
+        for (NamedText trait : traits) {
+            if (!trait.name.isBlank() && !trait.name.endsWith(".")) {
+                NamedText nt = new NamedText(trait.name + ".", trait.desc, trait.nested);
+                namedTraits.add(nt);
+            } else {
+                namedTraits.add(trait);
+            }
+        }
+        return namedTraits;
     }
 
     /**
@@ -871,11 +888,11 @@ public class QuteMonster extends Tools5eQuteBase {
                         if (s.isSpecial()) {
                             String ability = s.ability();
                             if (ability != null) {
-                                map.put("name", ability);
+                                map.put("name", uppercaseFirst(ability));
                             }
                             map.put("desc", s.mapValue());
                         } else {
-                            map.put(s.ability().toLowerCase(), s.modifier());
+                            map.put(uppercaseFirst(s.ability().toLowerCase()), s.modifier());
                         }
                         return map;
                     })
