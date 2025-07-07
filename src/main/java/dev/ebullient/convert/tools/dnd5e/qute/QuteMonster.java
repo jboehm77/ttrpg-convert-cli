@@ -45,9 +45,9 @@ public class QuteMonster extends Tools5eQuteBase {
     public final boolean isNpc;
     /** Creature size (capitalized) */
     public final String size;
-    /** Creature type (lowercase) */
+    /** Creature type (capitalized) */
     public final String type;
-    /** Creature subtype (lowercase) */
+    /** Creature subtype (capitalized) */
     public final String subtype;
     /** Creature alignment */
     public final String alignment;
@@ -403,27 +403,27 @@ public class QuteMonster extends Tools5eQuteBase {
         addUnlessEmpty(map, "damage_resistances", immuneResist.resist);
         addUnlessEmpty(map, "damage_immunities", immuneResist.immune);
         addUnlessEmpty(map, "condition_immunities", immuneResist.conditionImmune);
-        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "passive Perception " + passive);
+        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "Passive Perception " + passive);
         map.put("languages", languages);
         addUnlessEmpty(map, "cr", cr);
 
-        addUnlessEmpty(map, "traits", traitsFrom(allTraits.traits()));
-        addUnlessEmpty(map, "actions", traitsFrom(allTraits.actions()));
-        addUnlessEmpty(map, "bonus_actions", traitsFrom(allTraits.bonusActions()));
-        addUnlessEmpty(map, "reactions", traitsFrom(allTraits.reactions()));
-        addUnlessEmpty(map, "lair_actions", traitsFrom(allTraits.lairActions()));
-        addUnlessEmpty(map, "regional_effects", traitsFrom(allTraits.regionalEffects()));
+        addUnlessEmpty(map, "traits", punctuateTraitNames(traitsFrom(allTraits.traits())));
+        addUnlessEmpty(map, "actions", punctuateTraitNames(traitsFrom(allTraits.actions())));
+        addUnlessEmpty(map, "bonus_actions", punctuateTraitNames(traitsFrom(allTraits.bonusActions())));
+        addUnlessEmpty(map, "reactions", punctuateTraitNames(traitsFrom(allTraits.reactions())));
+        addUnlessEmpty(map, "lair_actions", punctuateTraitNames(traitsFrom(allTraits.lairActions())));
+        addUnlessEmpty(map, "regional_effects", punctuateTraitNames(traitsFrom(allTraits.regionalEffects())));
 
         TraitDescription legendary = allTraits.legendaryActions();
         if (isPresent(legendary)) {
             addUnlessEmpty(map, "legendary_description", legendary.description());
-            addUnlessEmpty(map, "legendary_actions", legendary.traits());
+            addUnlessEmpty(map, "legendary_actions", punctuateTraitNames(legendary.traits()));
         }
 
         TraitDescription mythic = allTraits.mythicActions();
         if (isPresent(mythic)) {
             addUnlessEmpty(map, "mythic_description", mythic.description());
-            addUnlessEmpty(map, "mythic_actions", mythic.traits());
+            addUnlessEmpty(map, "mythic_actions", punctuateTraitNames(mythic.traits()));
         }
 
         addUnlessEmpty(map, "source", getBooks());
@@ -452,6 +452,22 @@ public class QuteMonster extends Tools5eQuteBase {
             }
         }
         return "";
+    }
+
+    private List<NamedText> punctuateTraitNames(List<NamedText> traits) {
+        if (traits == null || traits.isEmpty()) {
+            return traits;
+        }
+        List<NamedText> namedTraits = new ArrayList<>();
+        for (NamedText trait : traits) {
+            if (!trait.name.isBlank() && !trait.name.endsWith(".")) {
+                NamedText nt = new NamedText(trait.name + ".", trait.desc, trait.nested);
+                namedTraits.add(nt);
+            } else {
+                namedTraits.add(trait);
+            }
+        }
+        return namedTraits;
     }
 
     /**
@@ -621,7 +637,7 @@ public class QuteMonster extends Tools5eQuteBase {
                 appendList(text, "Constant", fixed.get("constant"));
             }
             if (fixed.containsKey("will") && !hidden.contains("will")) {
-                appendList(text, "At will", fixed.get("will"));
+                appendList(text, "At Will", fixed.get("will"));
             }
             for (var duration : DurationType.values()) {
                 String key = duration.name();
@@ -650,7 +666,7 @@ public class QuteMonster extends Tools5eQuteBase {
                                 boolean isEach = num.endsWith("e");
                                 String value = String.format(duration.durationText, num.replace("e", ""));
                                 return isEach
-                                        ? value + " each"
+                                        ? value + " Each"
                                         : value;
                             };
                             appendList(text, f, v);
@@ -1071,14 +1087,14 @@ public class QuteMonster extends Tools5eQuteBase {
     @TemplateData
     public enum DurationType {
         recharge("{@recharge %s}"),
-        legendary("%s legendary action"),
-        charges("%s charge"),
-        rest("%s/rest"),
-        restLong("%s/long rest"),
-        daily("%s/day"),
-        weekly("%s/week"),
-        monthly("%s/month"),
-        yearly("%s/year"),;
+        legendary("%s Legendary Action"),
+        charges("%s Charge"),
+        rest("%s/Rest"),
+        restLong("%s/Long Rest"),
+        daily("%s/Day"),
+        weekly("%s/Week"),
+        monthly("%s/Month"),
+        yearly("%s/Year"),;
 
         final String durationText;
 
