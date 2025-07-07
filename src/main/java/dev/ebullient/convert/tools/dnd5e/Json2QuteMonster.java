@@ -1,6 +1,7 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.pluralize;
+import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +91,7 @@ public class Json2QuteMonster extends Json2QuteCommon {
                 linkifier().decoratedName(type, rootNode),
                 getSourceText(sources),
                 isNpc,
-                size, creatureType, subtype, monsterAlignment(),
+                size, uppercaseFirst(creatureType), uppercaseFirst(subtype), monsterAlignment(),
                 acHp,
                 speed(Tools5eFields.speed.getFrom(rootNode)),
                 abilityScores,
@@ -511,7 +512,7 @@ public class Json2QuteMonster extends Json2QuteCommon {
                     // Immediately after another creature's turn, The dragon can expend a use to take one of the following actions.
                     // The dragon regains all expended uses at the start of each of its turns.
                     headerText = replaceText(
-                            "Legendary Action Uses: %d%s. Immediately after another creature's turn, %s can expend a use to take one of the following actions. %s regains all expended uses at the start of each of %s turns."
+                            "*Legendary Action Uses: %d%s. Immediately after another creature's turn, %s can expend a use to take one of the following actions. %s regains all expended uses at the start of each of %s turns.*"
                                     .formatted(
                                             legendaryActionCount,
                                             legendaryActionsLairCount != legendaryActionCount
@@ -546,9 +547,9 @@ public class Json2QuteMonster extends Json2QuteCommon {
     String linkifySense(String sense) {
         int pos = sense.indexOf(" "); // find first space
         if (pos < 0) {
-            return linkify(Tools5eIndexType.sense, sense);
+            return linkify(Tools5eIndexType.sense, uppercaseFirst(sense));
         }
-        return replaceText("{@sense %s}%s".formatted(sense.substring(0, pos), sense.substring(pos)));
+        return replaceText("{@sense %s}%s".formatted(uppercaseFirst(sense.substring(0, pos)), sense.substring(pos)));
     }
 
     List<String> gear() {
