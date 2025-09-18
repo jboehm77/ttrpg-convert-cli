@@ -17,4 +17,4 @@ aliases:
 {resource.text}
 {/if}{#if resource.source }
 
-*Source: {resource.source}* {/if}
+*Sources: {resource.source}*{/if}

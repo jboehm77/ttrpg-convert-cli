@@ -9,12 +9,20 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Hazard"
+BookSource:
+- {resource.source}
 ---
 # {resource.name}
-{#if resource.hazardType }*{resource.hazardType}*  
+{#if resource.hazardType }*{resource.hazardType}*
+{/if}{#if resource.hasImages }{resource.showPortraitImage}
 {/if}{#if resource.text }
 
 {resource.text}
 {/if}
+{#if resource.hasMoreImages }
 
-{#if resource.source }*Source: {resource.source}* {/if}
+{resource.showMoreImages}
+{/if}
+
+*Sources: {resource.source}*

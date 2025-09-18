@@ -9,15 +9,21 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Background"
+BookSource:
+- {resource.source}
 ---
 # {resource.name}
-*Source: {resource.source}*  
-{#if resource.ability}
-
-**Ability Score Increase**: {resource.ability}
-{/if}{#if resource.prerequisite}
-
-***Prerequisites*** {resource.prerequisite}
+{#if resource.prerequisite }
+(*Prerequisite:* {resource.prerequisite})
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
 {/if}
 
 {resource.text}
+{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
+{/if}
+
+*Sources: {resource.source}*

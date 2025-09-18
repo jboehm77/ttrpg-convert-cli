@@ -9,26 +9,36 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Race"
+BookSource:
+- {resource.source}
 ---
-# {resource.name}
-*Source: {resource.source}*  
+# {resource.name}{#if resource.hasImages }
+{resource.showPortraitImage}{/if}
 
-- **Ability Scores**: {resource.ability}
 {#if resource.type}
-- **Type**: {resource.type}
+- **Creature Type:** {resource.type}
+{#else}
+- **Creature Type:** Humanoid
 {/if}
-- **Size**: {resource.size}
-- **Speed**: {resource.speed}
+- **Size:** {resource.size}
+- **Speed:** {resource.speed}
 {#if resource.spellcasting}
-- **Spellcasting**: {resource.spellcasting}
+- **Spellcasting:** {resource.spellcasting}
 {/if}
 
-## Traits
-
-{resource.traits}
 {#if resource.description}
-
 ## Description
 
 {resource.description}
+
 {/if}
+## Traits
+
+{resource.traits}
+{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
+{/if}
+
+*Sources: {resource.source}*
