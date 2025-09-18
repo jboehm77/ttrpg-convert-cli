@@ -568,7 +568,7 @@ public class FilterAllTest {
                 .render(new Json2QuteItem(commonTests.index, Tools5eIndexType.item, item).build());
         assertThat(rendered)
                 .describedAs("%s should render inherited Psychic resistance", displayName)
-                .contains("to psychic damage")
+                .contains("to Psychic damage")
                 .doesNotContain("getFullImmRes");
     }
 
@@ -624,7 +624,7 @@ public class FilterAllTest {
                 commonTests.index, Tools5eIndexType.monster, source).build();
 
         assertThat(monster.immuneResist.conditionImmune)
-                .contains("[blinded]", "[charmed]");
+                .contains("[Blinded]", "[Charmed]");
         assertThat(monster.immuneResist.conditionImmuneList)
                 .containsExactly("blinded", "charmed", "frightened", "grappled", "restrained");
     }

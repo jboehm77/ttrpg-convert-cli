@@ -59,8 +59,8 @@ public class Json2QuteCommonTest {
 
                         **Aberration**
 
-                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)\s\s
-                        - [Beholder](/compendium/bestiary/aberration/beholder-xmm.md)\s\s
+                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)
+                        - [Beholder](/compendium/bestiary/aberration/beholder-xmm.md)
 
                         Example text after"""); // trailing spaces are intentional (markdown hard line breaks)
     }
@@ -92,7 +92,7 @@ public class Json2QuteCommonTest {
                 """
                         Example text before
 
-                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)\s\s
+                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)
 
                         Example text after""");
     }
@@ -131,9 +131,9 @@ public class Json2QuteCommonTest {
                 """
                         Example text before
 
-                        - Lead Designer\s\s
-                            - Writer One\s\s
-                            - Writer Two\s\s
+                        - Lead Designer
+                            - Writer One
+                            - Writer Two
 
                         Example text after""");
     }
@@ -171,8 +171,8 @@ public class Json2QuteCommonTest {
                 """
                         Example text before
 
-                        - Writer One\s\s
-                        - Writer Two\s\s
+                        - Writer One
+                        - Writer Two
 
                         Example text after""");
     }
@@ -211,9 +211,8 @@ public class Json2QuteCommonTest {
 
                         Options (choose 1):
 
-                        - Options:\s\s
-                            - Athletics\s\s
-                            - Acrobatics\s\s
+                        ***Options.*** Athletics
+                        Acrobatics
 
                         Example text after""");
     }
@@ -252,12 +251,12 @@ public class Json2QuteCommonTest {
                 """
                         Example text before
 
-                        - Choose a skill:\s\s
+                        - Choose a skill:
 
                             Options (choose 1):
 
-                            - Athletics\s\s
-                            - Acrobatics\s\s
+                            - Athletics
+                            - Acrobatics
 
                         Example text after""");
     }
@@ -306,12 +305,12 @@ public class Json2QuteCommonTest {
 
                         **Aberration**
 
-                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)\s\s
-                        - [Beholder](/compendium/bestiary/aberration/beholder-xmm.md)\s\s
+                        - [Aboleth](/compendium/bestiary/aberration/aboleth-xmm.md)
+                        - [Beholder](/compendium/bestiary/aberration/beholder-xmm.md)
 
                         **Beast**
 
-                        - [Ape](/compendium/bestiary/beast/ape-xmm.md)\s\s
+                        - [Ape](/compendium/bestiary/beast/ape-xmm.md)
 
                         Example text after""");
     }

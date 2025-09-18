@@ -11,15 +11,26 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Reward"
 ---
 # {resource.name}
 {#if resource.detail }*{resource.detail}*  
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
 {/if}{#if resource.signatureSpells }
 
-- **Signature Spells**: {resource.signatureSpells}
+- **Signature Spells:** {resource.signatureSpells}
 {/if}{#if resource.text }
 
 {resource.text}
+{/if}{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
 {/if}
 
-*Source: {resource.source}* 
+*Source: {resource.source}*

@@ -11,25 +11,36 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Deity"
 ---
-# {resource.name}
-*Source: {resource.source}* {#if resource.image}
+# {resource.name}{#if resource.image}
 {resource.image.getEmbeddedLink("symbol")}{/if}
 
 {#if resource.altNames }
-- **Alternate Names**: {#each resource.altNames}{it}{#if it_hasNext}, {/if}{/each}
+- **Alternate Names:** {#each resource.altNames}{it}{#if it_hasNext}, {/if}{/each}
 {/if}{#if resource.alignment }
-- **Alignment**: {resource.alignment}
+- **Alignment:** {resource.alignment}
 {/if}{#if resource.category }
-- **Category**: {resource.category}
+- **Category:** {resource.category}
 {/if}{#if resource.domains }
-- **Domains**: {resource.domains}
+- **Domains:** {resource.domains}
 {/if}{#if resource.pantheon }
-- **Pantheon**: {resource.pantheon}
+- **Pantheon:** {resource.pantheon}
 {/if}{#if resource.province }
-- **Province**: {resource.province}
+- **Province:** {resource.province}
 {/if}{#if resource.symbol }
-- **Symbol**: {resource.symbol}
-{/if}
+- **Symbol:** {resource.symbol}
+{/if}{#if resource.text }
 
 {resource.text}
+{/if}{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
+{/if}
+
+*Source: {resource.source}*

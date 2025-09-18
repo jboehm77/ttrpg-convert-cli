@@ -2,6 +2,7 @@ package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.toAnchorTag;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 import static dev.ebullient.convert.StringUtil.valueOrDefault;
 
 import java.util.Collection;
@@ -44,9 +45,9 @@ record ItemProperty(
 
         return included
                 ? "[%s](%sitem-properties.md#%s)".formatted(
-                        linkText, index.rulesVaultRoot(),
+                        toTitleCase(linkText), index.rulesVaultRoot(),
                         toAnchorTag(isPresent(sectionName) ? sectionName : name))
-                : linkText;
+                : toTitleCase(linkText);
     }
 
     public static final Comparator<ItemProperty> comparator = Comparator.comparing(ItemProperty::name);
