@@ -2,6 +2,7 @@ package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.toAnchorTag;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -38,8 +39,8 @@ public record ItemMastery(
 
         return included
                 ? "[%s](%sitem-mastery.md#%s)".formatted(
-                        linkText, index.rulesVaultRoot(), toAnchorTag(name))
-                : linkText;
+                        toTitleCase(linkText), index.rulesVaultRoot(), toAnchorTag(name))
+                : toTitleCase(linkText);
     }
 
     public static final Comparator<ItemMastery> comparator = Comparator.comparing(ItemMastery::name);

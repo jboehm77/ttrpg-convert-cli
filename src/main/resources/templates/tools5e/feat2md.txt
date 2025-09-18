@@ -6,22 +6,29 @@ cssclasses:
 tags:
 {#for tag in resource.tags}
 - {tag}
-{/for}
-{/if}
+{/for}{/if}
 aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Feat"
 ---
 # {resource.name}
-*Source: {resource.source}*  
-
-{#if resource.level || resource.prerequisite}
-{#if resource.prerequisite}
-**Prerequisite**: {resource.prerequisite}
-{/if}{#if resource.level}
-**Level**: {resource.level}
+{#if resource.category || resource.prerequisite}
+*{#if resource.category}{resource.category} {/if}{#if resource.prerequisite}(Prerequisite: {resource.prerequisite}){/if}*
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
 {/if}
 
-{/if}
 {resource.text}
+
+{#if resource.hasMoreImages }
+{resource.showMoreImages}
+
+{/if}
+*Source: {resource.source}*
