@@ -11,6 +11,11 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
 ---
 # {resource.name}{#if resource.source }
 *Source: {resource.source}* {/if}
