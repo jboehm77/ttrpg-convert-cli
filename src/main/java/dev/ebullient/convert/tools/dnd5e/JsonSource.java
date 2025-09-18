@@ -250,11 +250,8 @@ public interface JsonSource extends JsonTextReplacement {
             // },
             String dcName = SourceField.name.replaceTextFrom(entry, this);
             text.add(spanWrap("abilityDc",
-                    getSources().isClassic()
-                            ? "**%s save DC**: your proficiency bonus + your %s"
-                                    .formatted(dcName, ability)
-                            : "**%s save DC**: %s + Proficiency Bonus"
-                                    .formatted(dcName, ability)));
+                    "**%s Save DC:** %s + Proficiency Bonus"
+                            .formatted(dcName, ability)));
         } else if (type == AppendTypeValue.abilityAttackMod) {
             // {
             //     "type": "abilityAttackMod",
@@ -265,16 +262,13 @@ public interface JsonSource extends JsonTextReplacement {
             // }
             String attackName = SourceField.name.replaceTextFrom(entry, this);
             text.add(spanWrap("abilityAttackMod",
-                    getSources().isClassic()
-                            ? "**%s attack modifier**: your proficiency bonus + your %s"
-                                    .formatted(attackName, ability)
-                            : "**%s attack modifier**: %s + Proficiency Bonus"
-                                    .formatted(attackName, ability)));
+                    "**%s Attack Modifier:** %s + Proficiency Bonus"
+                            .formatted(attackName, ability)));
         } else { // abilityGeneric
             List<String> inner = new ArrayList<>();
             String name = SourceField.name.replaceTextFrom(entry, this);
             if (isPresent(name)) {
-                inner.add("**" + name + ".**");
+                inner.add("***" + name + ".***");
             }
             if (Tools5eFields.text.existsIn(entry)) {
                 Tools5eFields.text.replaceTextFrom(entry, this);
@@ -295,7 +289,7 @@ public interface JsonSource extends JsonTextReplacement {
         text.add(spanWrap("attack",
                 "%s*%s:* %s *Hit:* %s".formatted(
                         isPresent(name) ? "***" + name + ".*** " : "",
-                        "MW".equals(attackType) ? "Melee Weapon Attack" : "Ranged Weapon Attack",
+                        "MW".equals(attackType) ? "Melee Attack Roll" : "Ranged Attack Roll",
                         atkString, hitString)));
     }
 
@@ -412,9 +406,9 @@ public interface JsonSource extends JsonTextReplacement {
                 List<String> item = new ArrayList<>();
                 appendToText(item, e, null);
                 if (item.size() > 0) {
-                    text.add(indent + listType.marker + item.get(0) + "  ");
+                    text.add(indent + listType.marker + item.get(0));
                     item.remove(0);
-                    item.forEach(x -> text.add(x.isEmpty() ? "" : indent + "    " + x + "  "));
+                    item.forEach(x -> text.add(x.isEmpty() ? "" : indent + "    " + x));
                 }
             });
         } finally {
@@ -427,7 +421,7 @@ public interface JsonSource extends JsonTextReplacement {
         text.add(heading + " " + SourceField.name.replaceTextFrom(entry, this));
         String prereq = getTextOrDefault(entry, "prerequisite", null);
         if (prereq != null) {
-            text.add("*Prerequisites* " + prereq);
+            text.add("*Prerequisites: " + prereq + "*");
         }
         text.add("");
         appendToText(text, SourceField.entries.getFrom(entry), "#" + heading);
@@ -456,16 +450,25 @@ public interface JsonSource extends JsonTextReplacement {
     default void appendOptions(List<String> text, JsonNode entry) {
         String indent = parseState().getListIndent();
         boolean pushed = parseState().indentList();
+        String name = "";
         try {
             List<String> list = new ArrayList<>();
             for (JsonNode e : iterableEntries(entry)) {
                 List<String> item = new ArrayList<>();
                 appendToText(item, e, null);
-                if (item.size() > 0) {
-                    StringBuilder listItem = new StringBuilder();
-                    listItem.append(indent).append("- ").append(item.get(0)).append("  ");
+                if (item.size() > 1) {
+                    name = item.get(0).replace("*", "");
+                    do {
+                        item.remove(0);
+                    } while (item.get(0).isEmpty());
+                    list.add("***" + name + ".*** " + item.get(0));
                     item.remove(0);
-                    item.forEach(x -> listItem.append(x.isEmpty() ? "" : "\n" + indent + "    " + x + "  "));
+                    item.forEach(x -> list.add(x.isEmpty() ? "" : x));
+                } else if (item.size() > 0) {
+                    StringBuilder listItem = new StringBuilder();
+                    listItem.append(indent).append("- ").append(item.get(0));
+                    item.remove(0);
+                    item.forEach(x -> listItem.append(x.isEmpty() ? "\n" : "\n" + indent + "    " + x));
                     list.add(listItem.toString());
                 }
             }
@@ -540,7 +543,7 @@ public interface JsonSource extends JsonTextReplacement {
         List<String> quoteText = new ArrayList<>();
         if (entry.has("by")) {
             String by = replaceText(Tools5eFields.by.getTextOrEmpty(entry));
-            quoteText.add("[!quote] A quote from " + by + "  ");
+            quoteText.add("[!quote] A quote from " + by);
         } else {
             quoteText.add("[!quote]  ");
         }
@@ -870,8 +873,8 @@ public interface JsonSource extends JsonTextReplacement {
         boolean pushTable = parseState().pushHtmlTable(true);
         try {
             if (!caption.isBlank()) {
-                inner.add("");
-                inner.add("**" + replaceText(caption) + "**");
+                inner.add(0, "");
+                inner.add(0, "**" + replaceText(caption) + "**");
             }
 
             JsonNode intro = TableFields.intro.getFrom(tableNode);
@@ -884,6 +887,7 @@ public interface JsonSource extends JsonTextReplacement {
             table.add("<table>");
 
             // Header rows from colLabelRows
+            table.add("<thead>");
             for (JsonNode headerRow : TableFields.colLabelRows.iterateArrayFrom(tableNode)) {
                 table.add("<tr>");
                 for (JsonNode cell : iterableElements(headerRow)) {
@@ -900,6 +904,7 @@ public interface JsonSource extends JsonTextReplacement {
                 }
                 table.add("</tr>");
             }
+            table.add("</thead>");
 
             // Data rows
             for (JsonNode r : TableFields.rows.iterateArrayFrom(tableNode)) {
@@ -954,6 +959,7 @@ public interface JsonSource extends JsonTextReplacement {
                 }
             }
             if (!blockid.isBlank()) {
+                maybeAddBlankLine(table);
                 table.add(blockid);
             }
 
@@ -1037,7 +1043,8 @@ public interface JsonSource extends JsonTextReplacement {
         }
         if (knownEntry != null) {
             String link = keyType.linkify(this, knownEntry);
-            return link.matches("\\[.+]\\(.+\\)") ? "!" + link : null;
+            return link.matches("\\[(.+)]\\((.+)\\)") ? "!" + link.replaceAll("\\[(.+)]\\((.+)\\)", "[$1| no-title]($2)")
+                    : null;
         }
         return null;
     }
@@ -1170,7 +1177,7 @@ public interface JsonSource extends JsonTextReplacement {
 
     default String mapAlignmentToString(String a) {
         return switch (a.toUpperCase()) {
-            case "A" -> "Any alignment";
+            case "A" -> "Any Alignment";
             case "C" -> "Chaotic";
             case "CE" -> "Chaotic Evil";
             case "CG" -> "Chaotic Good";
@@ -1178,7 +1185,7 @@ public interface JsonSource extends JsonTextReplacement {
             case "CGCN" -> "Chaotic Good or Chaotic Neutral";
             case "CGNE" -> "Chaotic Good or Neutral Evil";
             case "CECN" -> "Chaotic Evil or Chaotic Neutral";
-            case "CGNYE" -> "Any Chaotic alignment";
+            case "CGNYE" -> "Any Chaotic Alignment";
             case "CN" -> "Chaotic Neutral";
             case "CENE", "NECE" -> "Chaotic Evil or Neutral Evil";
             case "L" -> "Lawful";
@@ -1194,14 +1201,14 @@ public interface JsonSource extends JsonTextReplacement {
             case "NE" -> "Neutral Evil";
             case "NG" -> "Neutral Good";
             case "NGNE", "NENG" -> "Neutral Good or Neutral Evil";
-            case "G", "LNXCG" -> "Any Good alignment";
-            case "E", "CELENE", "LNXCE" -> "Any Evil alignment";
+            case "G", "LNXCG" -> "Any Good Alignment";
+            case "E", "CELENE", "LNXCE" -> "Any Evil Alignment";
             case "NELE", "LENE" -> "Neutral Evil or Lawful Evil";
-            case "LGNYE" -> "Any Non-Chaotic alignment";
-            case "LNXCNYE" -> "Any Non-Good alignment";
-            case "NXCGNYE" -> "Any Non-Lawful alignment";
-            case "NXLGNYE" -> "Any Non-Chaotic alignment";
-            case "LNXCNYG", "LNYNXCG" -> "Any Non-Evil alignment";
+            case "LGNYE" -> "Any Non-Chaotic Alignment";
+            case "LNXCNYE" -> "Any Non-Good Alignment";
+            case "NXCGNYE" -> "Any Non-Lawful Alignment";
+            case "NXLGNYE" -> "Any Non-Chaotic Alignment";
+            case "LNXCNYG", "LNYNXCG" -> "Any Non-Evil Alignment";
             case "U" -> "Unaligned";
             default -> {
                 tui().errorf("What alignment is this? %s (from %s)", a, getSources());
@@ -1389,19 +1396,19 @@ public interface JsonSource extends JsonTextReplacement {
             return "";
         }
         return switch (dmgType.toUpperCase()) {
-            case "A" -> "acid";
-            case "B" -> "bludgeoning";
-            case "C" -> "cold";
-            case "F" -> "fire";
-            case "O" -> "force";
-            case "L" -> "lightning";
-            case "N" -> "necrotic";
-            case "P" -> "piercing";
-            case "I" -> "poison";
-            case "Y" -> "psychic";
-            case "R" -> "radiant";
-            case "S" -> "slashing";
-            case "T" -> "thunder";
+            case "A" -> "Acid";
+            case "B" -> "Bludgeoning";
+            case "C" -> "Cold";
+            case "F" -> "Fire";
+            case "O" -> "Force";
+            case "L" -> "Lightning";
+            case "N" -> "Necrotic";
+            case "P" -> "Piercing";
+            case "I" -> "Poison";
+            case "Y" -> "Psychic";
+            case "R" -> "Radiant";
+            case "S" -> "Slashing";
+            case "T" -> "Thunder";
             default -> dmgType;
         };
     };
@@ -1411,15 +1418,15 @@ public interface JsonSource extends JsonTextReplacement {
         int gp = cp / 100;
         cp %= 100;
         if (gp > 0) {
-            result.add(String.format("%,d gp", gp));
+            result.add(String.format("%,d GP", gp));
         }
         int sp = cp / 10;
         cp %= 10;
         if (sp > 0) {
-            result.add(String.format("%,d sp", sp));
+            result.add(String.format("%,d SP", sp));
         }
         if (cp > 0) {
-            result.add(String.format("%,d cp", cp));
+            result.add(String.format("%,d CP", cp));
         }
         return String.join(", ", result);
     }
@@ -1472,11 +1479,11 @@ public interface JsonSource extends JsonTextReplacement {
 
     public static String spellLevelToText(String level) {
         return switch (level) {
-            case "0", "c" -> "cantrip";
-            case "1" -> "1st-level";
-            case "2" -> "2nd-level";
-            case "3" -> "3rd-level";
-            default -> level + "th-level";
+            case "0", "c" -> "Cantrip";
+            case "1" -> "1st-Level";
+            case "2" -> "2nd-Level";
+            case "3" -> "3rd-Level";
+            default -> level + "th-Level";
         };
     }
 
