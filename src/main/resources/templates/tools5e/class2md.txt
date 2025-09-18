@@ -11,34 +11,50 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Class"
 ---
-# {resource.name}
-*Source: {resource.source}*  
+# {resource.name}{#if resource.hasImages }
+{resource.showPortraitImage}{/if}
 
-{#if resource.classProgression }
-{resource.classProgression}
-
-{/if}
 ## Hit Points
 
 {#if resource.hitDice }
-- **Hit Dice**: 1d{resource.hitDice} per {resource.name} level
-- **Hit Points at First Level:** {resource.hitDice} + CON
-- **Hit Points at Higher Levels:** add {resource.hitRollAverage} OR 1d{resource.hitDice} + CON  (minimum of 1)
+- **Hit Dice:** 1d{resource.hitDice} per {resource.name} Level
+- **Hit Points at First Level:** {resource.hitDice} + Constitution Modifier
+- **Hit Points at Higher Levels:** add {resource.hitRollAverage} OR 1d{resource.hitDice} + Constitution Modifier  (minimum of 1)
 {#else}
-- **Hit Dice**: *x* = hit dice specified in the sidekick's statblock (human, gnome, kobold, etc.)
-- **Hit Points at First Level:** *x* + CON
-- **Hit Points at Higher Levels:** add 1d*x* + CON (minimum of 1)
+- **Hit Dice:** *x* = hit dice specified in the sidekick's statblock (human, gnome, kobold, etc.)
+- **Hit Points at First Level:** *x* + Constitution Modifier
+- **Hit Points at Higher Levels:** add 1d*x* + Constitution Modifier (minimum of 1)
 {/if}
 
-## Starting {resource.name}
+## Becoming {#if resource.name == 'Artificer'}an{#else}a{/if} {resource.name}...
+
+### As a Level 1 Character
 
 {resource.startingEquipment}
 
 {#if resource.multiclassing }
-## Multiclassing {resource.name}
+### As a Multiclass Character
 
 {resource.multiclassing}
-{/if}
 
+{/if}
+{#if resource.classProgression }
+## {resource.name} Class Features
+
+{resource.classProgression}
+
+{/if}
+{#if resource.hasMoreImages }
+{resource.showMoreImages}
+
+{/if}
 {resource.text}
+
+*Source: {resource.source}*
