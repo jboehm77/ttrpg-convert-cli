@@ -303,7 +303,7 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
 
             result = attackPattern.matcher(result).replaceAll((match) -> {
                 List<String> type = new ArrayList<>();
-                String method = "";
+                // String method = "";
                 // render.js Renderer.attackTagToFull
                 // const ptType = tags.includes("m") ? "Melee " : tags.includes("r") ? "Ranged "
                 // : tags.includes("g") ? "Magical " : tags.includes("a") ? "Area " : "";
@@ -315,26 +315,26 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
                 if (match.group(1).contains("r")) {
                     type.add("Ranged ");
                 }
-                if (match.group(1).contains("g")) {
-                    type.add("Magical ");
-                }
+                // if (match.group(1).contains("g")) {
+                //     type.add("Magical ");
+                // }
                 if (match.group(1).contains("a")) {
                     type.add("Area ");
                 }
 
-                if (match.group(1).contains("w")) {
-                    method = "Weapon ";
-                } else if (match.group(1).contains("s")) {
-                    method = "Spell ";
-                } else if (match.group(1).contains("p")) {
-                    method = "Power ";
-                }
+                // if (match.group(1).contains("w")) {
+                //     method = "Weapon ";
+                // } else if (match.group(1).contains("s")) {
+                //     method = "Spell ";
+                // } else if (match.group(1).contains("p")) {
+                //     method = "Power ";
+                // }
 
-                if (method.isBlank()) {
-                    return String.format("*%sAttack Roll:*", joinConjunct(", ", " or ", type));
-                } else {
-                    return String.format("*%s%sAttack:*", joinConjunct(", ", " or ", type), method);
-                }
+                // if (method.isBlank()) {
+                return String.format("*%sAttack Roll:*", joinConjunct(", ", "or ", type));
+                // } else {
+                //     return String.format("*%s%sAttack:*", joinConjunct(", ", " or ", type), method);
+                // }
             });
 
             try {
@@ -576,7 +576,7 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
         String linkText = valueOrDefault(parts, 2, name);
 
         if (name.isBlank()) {
-            return "[%s](%s%s.md)".formatted(linkText,
+            return "[%s](%s%s.md)".formatted(toTitleCase(linkText),
                     index().rulesVaultRoot(),
                     linkifier().getRelativePath(type));
         }
@@ -917,7 +917,7 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
 
         String key = findKey(type, parts[0], source);
         if (index().isExcluded(key)) {
-            return "<span title=\"%s\">%s</span>".formatted(TtrpgConfig.sourceToLongName(source), linkText);
+            return "<span title=\"%s\">%s</span>".formatted(TtrpgConfig.sourceToLongName(source), toTitleCase(linkText));
         }
 
         return linkifier().link(linkText, key);
@@ -956,19 +956,19 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
             case itemMastery -> {
                 ItemMastery mastery = index().findItemMastery(s, getSources());
                 yield mastery == null
-                        ? linkText
+                        ? toTitleCase(linkText)
                         : mastery.linkify(linkText);
             }
             case itemProperty -> {
                 ItemProperty property = index().findItemProperty(s, getSources());
                 yield property == null
-                        ? linkText
+                        ? toTitleCase(linkText)
                         : property.linkify(linkText);
             }
             case itemType -> {
                 ItemType itemType = index().findItemType(s, getSources());
                 yield itemType == null
-                        ? linkText
+                        ? toTitleCase(linkText)
                         : itemType.linkify(linkText);
             }
             default -> linkText;

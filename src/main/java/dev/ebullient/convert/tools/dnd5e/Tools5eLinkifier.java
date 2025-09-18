@@ -1,6 +1,7 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.toAnchorTag;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -190,7 +191,7 @@ public class Tools5eLinkifier {
             case variantrule -> linkVariantRules(linkText, key);
             default -> {
                 JsonNode node = index.getNode(key);
-                yield linkOrText(linkText, key,
+                yield linkOrText(toTitleCase(linkText), key,
                         getRelativePath(type),
                         fixFileName(decoratedName(type, node), linkSource.primarySource(), type));
             }
@@ -222,7 +223,7 @@ public class Tools5eLinkifier {
 
     private String linkClass(String linkText, String classKey) {
         Tools5eSources classSources = Tools5eSources.findSources(classKey);
-        return linkOrText(linkText, classKey,
+        return linkOrText(toTitleCase(linkText), classKey,
                 getRelativePath(Tools5eIndexType.classtype),
                 getClassResource(classSources.getName(), classSources.primarySource()));
     }
@@ -232,13 +233,13 @@ public class Tools5eLinkifier {
         Tools5eSources featureSources = Tools5eSources.findSources(featureKey);
         int level = IndexFields.level.intOrThrow(featureNode); // required
 
-        String headerName = decoratedFeatureTypeName(featureSources, featureNode) + " (Level " + level + ")";
+        String headerName = "Level " + level + ": " + decoratedFeatureTypeName(featureSources, featureNode);
         String resource = slugify(getClassResource(
                 IndexFields.className.getTextOrEmpty(featureNode),
                 IndexFields.classSource.getTextOrEmpty(featureNode)));
 
         return "[%s](%s%s/%s.md#%s)".formatted(
-                linkText,
+                toTitleCase(linkText),
                 index.compendiumVaultRoot(),
                 getRelativePath(Tools5eIndexType.classtype),
                 resource,
@@ -283,7 +284,7 @@ public class Tools5eLinkifier {
         String sectionName = sources == null ? linkText : sources.getName();
 
         return "[%s](%s%s.md#%s)".formatted(
-                linkText,
+                toTitleCase(linkText),
                 index.rulesVaultRoot(),
                 getRelativePath(Tools5eIndexType.getTypeFromKey(ruleKey)),
                 toAnchorTag(sectionName));
@@ -292,15 +293,14 @@ public class Tools5eLinkifier {
     public String linkSpellEntry(Tools5eSources sources) {
         JsonNode spellNode = sources.findNode();
         String name = decoratedName(Tools5eIndexType.spell, spellNode);
-        return "[%s](%s%s/%s.md \"%s\")".formatted(name,
+        return "[%s](%s%s/%s.md)".formatted(toTitleCase(name),
                 Tools5eIndex.instance().compendiumVaultRoot(),
                 getRelativePath(Tools5eIndexType.spell),
-                fixFileName(name, sources),
-                sources.primarySource());
+                fixFileName(name, sources));
     }
 
     public String linkSubclass(String linkText, String subclassKey) {
-        return linkOrText(linkText, subclassKey,
+        return linkOrText(toTitleCase(linkText), subclassKey,
                 getRelativePath(Tools5eIndexType.classtype),
                 getSubclassResource(subclassKey));
     }
@@ -315,15 +315,19 @@ public class Tools5eLinkifier {
 
         Tools5eSources featureSources = Tools5eSources.findSources(featureKey);
 
-        String level = Tools5eFields.level.getTextOrEmpty(featureJson);
-        String headerName = decoratedFeatureTypeName(featureSources, featureJson) + " (Level " + level + ")";
+        String level = (decoratedFeatureTypeName(featureSources, featureJson).startsWith("Channel Divinity: ")
+                && IndexFields.subclassShortName.getTextOrEmpty(subclassNode)
+                        .matches("[Aa]rcana|[Dd]eath|[Ff]orge|[Gg]rave|[Nn]ature|[Oo]rder|[Pp]eace|[Tt]empest|[Tt]wilight"))
+                                ? "2"
+                                : Tools5eFields.level.getTextOrEmpty(featureJson);
+        String headerName = "Level " + level + ": " + decoratedFeatureTypeName(featureSources, featureJson);
         String resource = slugify(getSubclassResource(
                 SourceField.name.getTextOrEmpty(subclassNode),
                 IndexFields.className.getTextOrEmpty(subclassNode),
                 IndexFields.classSource.getTextOrEmpty(subclassNode),
                 SourceField.source.getTextOrEmpty(subclassNode)));
         return "[%s](%s%s/%s.md#%s)".formatted(
-                linkText,
+                toTitleCase(linkText),
                 index.compendiumVaultRoot(),
                 getRelativePath(Tools5eIndexType.classtype),
                 resource,
@@ -334,7 +338,7 @@ public class Tools5eLinkifier {
         Tools5eSources rulesSources = Tools5eSources.findSources(rulesKey);
         String name = rulesSources.getName();
         return "[%s](%s%s/%s.md)".formatted(
-                linkText,
+                toTitleCase(linkText),
                 index.rulesVaultRoot(),
                 getRelativePath(Tools5eIndexType.variantrule),
                 fixFileName(name, rulesSources));

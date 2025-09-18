@@ -1,5 +1,7 @@
 package dev.ebullient.convert.tools.dnd5e;
 
+import static dev.ebullient.convert.StringUtil.uppercaseFirst;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -189,7 +191,7 @@ public class Json2QuteCompose extends Json2QuteCommon {
         String duration = flattenActionTime(ComposedTypeFields.time.getFrom(entry));
         if (!duration.isEmpty()) {
             maybeAddBlankLine(text);
-            text.add("- **Duration**: " + duration);
+            text.add("- **Duration:** " + duration);
         }
 
         maybeAddBlankLine(text);
@@ -215,8 +217,9 @@ public class Json2QuteCompose extends Json2QuteCommon {
         } else if (entry.isTextual()) {
             return entry.asText();
         } else if (entry.isObject()) {
-            return String.format("%s %s", ComposedTypeFields.number.replaceTextFrom(entry, index),
-                    ComposedTypeFields.unit.replaceTextFrom(entry, index));
+            String unit = ComposedTypeFields.unit.replaceTextFrom(entry, index);
+            unit = unit.equalsIgnoreCase("bonus") ? "Bonus Action" : uppercaseFirst(unit);
+            return String.format("%s %s", ComposedTypeFields.number.replaceTextFrom(entry, index), unit);
         } else {
             List<String> elements = new ArrayList<>();
             entry.forEach(x -> elements.add(flattenActionTime(x)));

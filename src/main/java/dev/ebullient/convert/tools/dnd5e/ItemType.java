@@ -2,6 +2,7 @@ package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.toAnchorTag;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 import static dev.ebullient.convert.StringUtil.valueOrDefault;
 
 import java.util.HashMap;
@@ -48,8 +49,8 @@ public record ItemType(
 
         return included
                 ? "[%s](%sitem-types.md#%s)".formatted(
-                        linkText, index.rulesVaultRoot(), toAnchorTag(name))
-                : linkText;
+                        toTitleCase(linkText), index.rulesVaultRoot(), toAnchorTag(name))
+                : toTitleCase(linkText);
     }
 
     public static final Map<String, ItemType> typeMap = new HashMap<>();

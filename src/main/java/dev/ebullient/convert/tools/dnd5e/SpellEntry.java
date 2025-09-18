@@ -1,7 +1,6 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
-import static dev.ebullient.convert.StringUtil.join;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -335,11 +334,10 @@ public class SpellEntry {
             }
 
             linkSources.removeIf(String::isEmpty);
-            return "[%s](%s%s/%s.md%s)".formatted(linkText,
+            return "[%s](%s%s/%s.md)".formatted(linkText,
                     Tools5eIndex.instance().compendiumVaultRoot(),
                     linkifier().getRelativePath(Tools5eIndexType.spellIndex),
-                    resource,
-                    linkSources.isEmpty() ? "" : " \"%s\"".formatted(join(";", linkSources)));
+                    resource);
         }
 
         private String sourceString(Tools5eIndexType type, String value) {
@@ -355,15 +353,15 @@ public class SpellEntry {
                 append.add("as " + JsonSource.spellLevelToText(asLevel));
             } else if (isPresent(spellLevel)) {
                 String display = JsonSource.spellLevelToText(spellLevel);
-                if ("cantrip".equals(display)) {
-                    display = "cantrips";
+                if ("Cantrip".equals(display)) {
+                    display = "Cantrips";
                 } else {
-                    display += " spells";
+                    display += " Spells";
                 }
                 append.add("with access to " + display);
             }
             if (isPresent(classLevel) && !"1".equals(classLevel)) {
-                append.add("at class level " + classLevel);
+                append.add("at Class Level " + classLevel);
             }
             return String.join(", ", append);
         }

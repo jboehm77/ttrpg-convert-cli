@@ -11,15 +11,24 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Background"
 ---
 # {resource.name}
-*Source: {resource.source}*  
-{#if resource.ability}
-
-**Ability Score Increase**: {resource.ability}
-{/if}{#if resource.prerequisite}
-
-***Prerequisites*** {resource.prerequisite}
+{#if resource.prerequisite }
+(*Prerequisite:* {resource.prerequisite})
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
 {/if}
 
 {resource.text}
+{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
+{/if}
+
+*Source: {resource.source}*

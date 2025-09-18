@@ -1,6 +1,8 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.pluralize;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
+import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +92,7 @@ public class Json2QuteMonster extends Json2QuteCommon {
                 linkifier().decoratedName(type, rootNode),
                 getSourceText(sources),
                 isNpc,
-                size, creatureType, subtype, monsterAlignment(),
+                size, uppercaseFirst(creatureType), toTitleCase(subtype, true), monsterAlignment(),
                 acHp,
                 speed(Tools5eFields.speed.getFrom(rootNode)),
                 abilityScores,
@@ -490,37 +492,37 @@ public class Json2QuteMonster extends Json2QuteCommon {
                 boolean isNamedCreature = MonsterFields.isNamedCreature.booleanOrDefault(rootNode, false);
                 var possessive = isNamedCreature ? "their" : "its";
 
-                if (getSources().isClassic()) {
-                    var shortName = Tools5eJsonSourceCopier.getShortName(rootNode, true);
-                    // The dragon can take 3 legendary actions, choosing from the options below.
-                    // Only one legendary action can be used at a time and only at the end of another creature's turn.
-                    // The dragon regains spent legendary actions at the start of its turn.
-                    headerText = replaceText(
-                            "%s can take %d legendary action%s%s, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. %s regains spent legendary actions at the start of %s turn."
-                                    .formatted(shortName,
-                                            legendaryActionCount,
-                                            legendaryActionCount == 1 ? "" : "s",
-                                            legendaryActionsLairCount != legendaryActionCount
-                                                    ? " (or %d when in %s lair)".formatted(legendaryActionsLairCount,
-                                                            possessive)
-                                                    : "",
-                                            shortName,
-                                            possessive));
-                } else {
-                    // Legendary Action Uses: 3 (4 in Lair).
-                    // Immediately after another creature's turn, The dragon can expend a use to take one of the following actions.
-                    // The dragon regains all expended uses at the start of each of its turns.
-                    headerText = replaceText(
-                            "Legendary Action Uses: %d%s. Immediately after another creature's turn, %s can expend a use to take one of the following actions. %s regains all expended uses at the start of each of %s turns."
-                                    .formatted(
-                                            legendaryActionCount,
-                                            legendaryActionsLairCount != legendaryActionCount
-                                                    ? " (%d in Lair)".formatted(legendaryActionsLairCount)
-                                                    : "",
-                                            Tools5eJsonSourceCopier.getShortName(rootNode, false),
-                                            Tools5eJsonSourceCopier.getShortName(rootNode, true),
-                                            possessive));
-                }
+                // if (getSources().isClassic()) {
+                //     var shortName = Tools5eJsonSourceCopier.getShortName(rootNode, true);
+                //     // The dragon can take 3 legendary actions, choosing from the options below.
+                //     // Only one legendary action can be used at a time and only at the end of another creature's turn.
+                //     // The dragon regains spent legendary actions at the start of its turn.
+                //     headerText = replaceText(
+                //             "%s can take %d legendary action%s%s, choosing from the options below. Only one legendary action can be used at a time and only at the end of another creature's turn. %s regains spent legendary actions at the start of %s turn."
+                //                     .formatted(shortName,
+                //                             legendaryActionCount,
+                //                             legendaryActionCount == 1 ? "" : "s",
+                //                             legendaryActionsLairCount != legendaryActionCount
+                //                                     ? " (or %d when in %s lair)".formatted(legendaryActionsLairCount,
+                //                                             possessive)
+                //                                     : "",
+                //                             shortName,
+                //                             possessive));
+                // } else {
+                // Legendary Action Uses: 3 (4 in Lair).
+                // Immediately after another creature's turn, The dragon can expend a use to take one of the following actions.
+                // The dragon regains all expended uses at the start of each of its turns.
+                headerText = replaceText(
+                        "Legendary Action Uses: %d%s. Immediately after another creature's turn, %s can expend a use to take one of the following actions. %s regains all expended uses at the start of each of %s turns."
+                                .formatted(
+                                        legendaryActionCount,
+                                        legendaryActionsLairCount != legendaryActionCount
+                                                ? " (%d in Lair)".formatted(legendaryActionsLairCount)
+                                                : "",
+                                        Tools5eJsonSourceCopier.getShortName(rootNode, false),
+                                        Tools5eJsonSourceCopier.getShortName(rootNode, true),
+                                        possessive));
+                // }
             }
             return new TraitDescription(title, headerText, traits);
         } finally {
@@ -546,9 +548,9 @@ public class Json2QuteMonster extends Json2QuteCommon {
     String linkifySense(String sense) {
         int pos = sense.indexOf(" "); // find first space
         if (pos < 0) {
-            return linkify(Tools5eIndexType.sense, sense);
+            return linkify(Tools5eIndexType.sense, uppercaseFirst(sense));
         }
-        return replaceText("{@sense %s}%s".formatted(sense.substring(0, pos), sense.substring(pos)));
+        return uppercaseFirst(replaceText("{@sense %s}%s".formatted(sense.substring(0, pos), sense.substring(pos))));
     }
 
     List<String> gear() {

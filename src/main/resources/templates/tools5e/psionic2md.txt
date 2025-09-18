@@ -11,6 +11,12 @@ aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Psionic"
 ---
 # {resource.name}
 *{resource.typeOrder}*  

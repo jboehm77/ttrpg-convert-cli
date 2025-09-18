@@ -1,6 +1,7 @@
 package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,13 +74,13 @@ public class Json2QuteRace extends Json2QuteCommon {
                 List<String> list = new ArrayList<>();
                 for (var f : speed.properties()) {
                     if (f.getValue().isIntegralNumber()) {
-                        list.add(String.format("%s: %s ft.",
-                                f.getKey(), f.getValue().asText()));
+                        list.add(String.format("%s %s ft.",
+                                toTitleCase(f.getKey()), f.getValue().asText()));
                     } else if (f.getValue().isBoolean()) {
-                        list.add(f.getKey() + " equal to your walking speed");
+                        list.add(toTitleCase(f.getKey()) + " Speed equal to your Walking Speed");
                     }
                 }
-                return String.join("; ", list);
+                return String.join(", ", list);
             }
         } catch (IllegalArgumentException ignored) {
         }
@@ -94,7 +95,7 @@ public class Json2QuteRace extends Json2QuteCommon {
         }
         return types.isEmpty()
                 ? null
-                : String.join(", ", types);
+                : toTitleCase(String.join(", ", types));
     }
 
     String spellcastingAbility() {

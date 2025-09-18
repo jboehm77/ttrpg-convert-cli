@@ -47,13 +47,13 @@ public class ImageRef {
                 ? ""
                 : title.replaceAll("\\[(.+?)]\\(.+?\\)", "$1");
 
-        if (title.length() > 50) {
-            this.title = escape(title.substring(0, 26) + "...");
-            this.titleAttr = " \"" + escape(title) + "\"";
-        } else {
-            this.title = escape(title);
-            this.titleAttr = "";
-        }
+        // if (title.length() > 50) {
+        //     this.title = escape(title.substring(0, 26) + "...");
+        //     this.titleAttr = " \"" + escape(title) + "\"";
+        // } else {
+        this.title = escape(title);
+        this.titleAttr = "";
+        // }
         this.vaultPath = vaultPath;
         this.width = width;
     }

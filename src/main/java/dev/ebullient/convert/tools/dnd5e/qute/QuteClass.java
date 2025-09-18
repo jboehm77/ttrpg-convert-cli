@@ -164,29 +164,29 @@ public class QuteClass extends Tools5eQuteBase {
                 maybeAddBlankLine(content);
                 if (isClassic) {
                     if (isPresent(armor)) {
-                        content.add("- **Armor**: " + armor);
+                        content.add("- **Armor:** " + armor);
                     }
                     if (isPresent(weapons)) {
-                        content.add("- **Weapons**: " + weapons);
+                        content.add("- **Weapons:** " + weapons);
                     }
                     if (isPresent(tools)) {
-                        content.add("- **Tools**: " + tools);
+                        content.add("- **Tools:** " + tools);
                     }
                     if (isPresent(skills)) {
-                        content.add("- **Skills**: " + skills);
+                        content.add("- **Skills:** " + skills);
                     }
                 } else {
                     if (isPresent(skills)) {
-                        content.add("- **Skill Proficiencies**: " + skills);
+                        content.add("- **Skill Proficiencies:** " + skills);
                     }
                     if (isPresent(weapons)) {
-                        content.add("- **Weapon Proficiencies**: " + weapons);
+                        content.add("- **Weapon Proficiencies:** " + weapons);
                     }
                     if (isPresent(tools)) {
-                        content.add("- **Tool Proficiencies**: " + tools);
+                        content.add("- **Tool Proficiencies:** " + tools);
                     }
                     if (isPresent(armor)) {
-                        content.add("- **Armor Training**: " + armor);
+                        content.add("- **Armor Training:** " + armor);
                     }
                 }
             }
@@ -235,20 +235,20 @@ public class QuteClass extends Tools5eQuteBase {
         public String getProficiencies() {
             List<String> text = new ArrayList<>();
             if (isClassic) {
-                text.add("- **Saving Throws**: " + getJoinOrDefault(savingThrows, null));
-                text.add("- **Armor**: " + (isPresent(armor) ? getArmorString() : "none"));
-                text.add("- **Weapons**: " + getJoinOrDefault(weapons, isClassic ? null : " and "));
-                text.add("- **Tools**: " + getJoinOrDefault(tools, isClassic ? null : " and "));
-                text.add("- **Skills**: " + join(" *or* ", skills));
+                text.add("- **Saving Throws:** " + getJoinOrDefault(savingThrows, null));
+                text.add("- **Armor:** " + (isPresent(armor) ? getArmorString() : "none"));
+                text.add("- **Weapons:** " + getJoinOrDefault(weapons, isClassic ? null : " and "));
+                text.add("- **Tools:** " + getJoinOrDefault(tools, isClassic ? null : " and "));
+                text.add("- **Skills:** " + join(" *or* ", skills));
             } else {
-                text.add("- **Saving Throw Proficiencies**: " + getJoinOrDefault(savingThrows, null));
-                text.add("- **Skill Proficiencies**: " + join(" *or* ", skills));
-                text.add("- **Weapon Proficiencies**: " + getJoinOrDefault(weapons, isClassic ? null : " and "));
+                text.add("- **Saving Throw Proficiencies:** " + getJoinOrDefault(savingThrows, null));
+                text.add("- **Skill Proficiencies:** " + join(" *or* ", skills));
+                text.add("- **Weapon Proficiencies:** " + getJoinOrDefault(weapons, isClassic ? null : " and "));
                 if (isPresent(tools)) {
-                    text.add("- **Tool Proficiencies**: " + getJoinOrDefault(tools, isClassic ? null : " and "));
+                    text.add("- **Tool Proficiencies:** " + getJoinOrDefault(tools, isClassic ? null : " and "));
                 }
                 if (isPresent(armor)) {
-                    text.add("- **Armor Training**: " + getArmorString());
+                    text.add("- **Armor Training:** " + getArmorString());
                 }
             }
             return String.join("\n", text);
@@ -343,11 +343,11 @@ public class QuteClass extends Tools5eQuteBase {
             // : `{@dice ${clsHd.number}d${clsHd.faces}|${clsHd.number === 1 ? "" :
             // clsHd.number}D${clsHd.faces}|Hit die}`;
             if (isSidekick) {
-                String suffix = isClassic ? "its Constitution modifier" : "its Con. modifier";
+                String suffix = "its Con. Modifier";
                 return """
-                        - **Hit Point Die**: *x*; specified in the sidekick's statblock (human, gnome, kobold, etc.)
+                        - **Hit Point Die:** *x*; specified in the sidekick's statblock (human, gnome, kobold, etc.)
                         - **Hit Points at Level 1:** 1d*x* + %s
-                        - **Hit Points per additional %s lvel:** 1d*x* + %s (minimum of 1 hit point per level)
+                        - **Hit Points per additional %s Level:** 1d*x* + %s (minimum of 1 Hit Point per Level)
                         """
                         .stripIndent()
                         .formatted(suffix, name, suffix);
@@ -361,7 +361,7 @@ public class QuteClass extends Tools5eQuteBase {
             // : `${clsHd.number * clsHd.faces} + Con. modifier`;
             String level1 = "%s + %s".formatted(
                     number * face,
-                    isClassic ? "your Constitution modifier" : "Con. modifier");
+                    "Con. Modifier");
 
             // classic ? `${Renderer.get().render(Renderer.class.getHitDiceEntry(clsHd,
             // {styleHint}))} (or ${((clsHd.number * clsHd.faces) / 2 + 1)}) + your
@@ -369,14 +369,11 @@ public class QuteClass extends Tools5eQuteBase {
             // : `${Renderer.get().render(Renderer.class.getHitDiceEntry(clsHd,
             // {styleHint}))} + your Con. modifier, or, ${((clsHd.number * clsHd.faces) / 2
             // + 1)} + your Con. modifier`;
-            String levelUp = isClassic
-                    ? "%s (or %s) + your Constitution modifier".formatted(
-                            dieEntry, average)
-                    : "%s + your Con. modifier or %s + your Con. modifier".formatted(
-                            dieEntry, average); // average
+            String levelUp = "%s + your Con. Modifier or %s + your Con. Modifier".formatted(
+                    dieEntry, average); // average
 
             return """
-                    - **Hit Point Die:** %s per %s level
+                    - **Hit Point Die:** %s per %s Level
                     - **Hit Points at Level 1:** %s
                     - **Hit Points per additional %s Level:** %s</div>
                     """.formatted(dieEntry, name, level1, name, levelUp);
