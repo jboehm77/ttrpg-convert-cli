@@ -1045,7 +1045,7 @@ public interface JsonSource extends JsonTextReplacement {
 
     default String mapAlignmentToString(String a) {
         return switch (a.toUpperCase()) {
-            case "A" -> "Any alignment";
+            case "A" -> "Any Alignment";
             case "C" -> "Chaotic";
             case "CE" -> "Chaotic Evil";
             case "CG" -> "Chaotic Good";
@@ -1053,7 +1053,7 @@ public interface JsonSource extends JsonTextReplacement {
             case "CGCN" -> "Chaotic Good or Chaotic Neutral";
             case "CGNE" -> "Chaotic Good or Neutral Evil";
             case "CECN" -> "Chaotic Evil or Chaotic Neutral";
-            case "CGNYE" -> "Any Chaotic alignment";
+            case "CGNYE" -> "Any Chaotic Alignment";
             case "CN" -> "Chaotic Neutral";
             case "CENE", "NECE" -> "Chaotic Evil or Neutral Evil";
             case "L" -> "Lawful";
@@ -1069,14 +1069,14 @@ public interface JsonSource extends JsonTextReplacement {
             case "NE" -> "Neutral Evil";
             case "NG" -> "Neutral Good";
             case "NGNE", "NENG" -> "Neutral Good or Neutral Evil";
-            case "G", "LNXCG" -> "Any Good alignment";
-            case "E", "CELENE", "LNXCE" -> "Any Evil alignment";
+            case "G", "LNXCG" -> "Any Good Alignment";
+            case "E", "CELENE", "LNXCE" -> "Any Evil Alignment";
             case "NELE", "LENE" -> "Neutral Evil or Lawful Evil";
-            case "LGNYE" -> "Any Non-Chaotic alignment";
-            case "LNXCNYE" -> "Any Non-Good alignment";
-            case "NXCGNYE" -> "Any Non-Lawful alignment";
-            case "NXLGNYE" -> "Any Non-Chaotic alignment";
-            case "LNXCNYG", "LNYNXCG" -> "Any Non-Evil alignment";
+            case "LGNYE" -> "Any Non-Chaotic Alignment";
+            case "LNXCNYE" -> "Any Non-Good Alignment";
+            case "NXCGNYE" -> "Any Non-Lawful Alignment";
+            case "NXLGNYE" -> "Any Non-Chaotic Alignment";
+            case "LNXCNYG", "LNYNXCG" -> "Any Non-Evil Alignment";
             case "U" -> "Unaligned";
             default -> {
                 tui().errorf("What alignment is this? %s (from %s)", a, getSources());
@@ -1264,19 +1264,19 @@ public interface JsonSource extends JsonTextReplacement {
             return "";
         }
         return switch (dmgType.toUpperCase()) {
-            case "A" -> "acid";
-            case "B" -> "bludgeoning";
-            case "C" -> "cold";
-            case "F" -> "fire";
-            case "O" -> "force";
-            case "L" -> "lightning";
-            case "N" -> "necrotic";
-            case "P" -> "piercing";
-            case "I" -> "poison";
-            case "Y" -> "psychic";
-            case "R" -> "radiant";
-            case "S" -> "slashing";
-            case "T" -> "thunder";
+            case "A" -> "Acid";
+            case "B" -> "Bludgeoning";
+            case "C" -> "Cold";
+            case "F" -> "Fire";
+            case "O" -> "Force";
+            case "L" -> "Lightning";
+            case "N" -> "Necrotic";
+            case "P" -> "Piercing";
+            case "I" -> "Poison";
+            case "Y" -> "Psychic";
+            case "R" -> "Radiant";
+            case "S" -> "Slashing";
+            case "T" -> "Thunder";
             default -> dmgType;
         };
     };
@@ -1286,15 +1286,15 @@ public interface JsonSource extends JsonTextReplacement {
         int gp = cp / 100;
         cp %= 100;
         if (gp > 0) {
-            result.add(String.format("%,d gp", gp));
+            result.add(String.format("%,d GP", gp));
         }
         int sp = cp / 10;
         cp %= 10;
         if (sp > 0) {
-            result.add(String.format("%,d sp", sp));
+            result.add(String.format("%,d SP", sp));
         }
         if (cp > 0) {
-            result.add(String.format("%,d cp", cp));
+            result.add(String.format("%,d CP", cp));
         }
         return String.join(", ", result);
     }
@@ -1341,11 +1341,11 @@ public interface JsonSource extends JsonTextReplacement {
 
     public static String spellLevelToText(String level) {
         return switch (level) {
-            case "0", "c" -> "cantrip";
-            case "1" -> "1st-level";
-            case "2" -> "2nd-level";
-            case "3" -> "3rd-level";
-            default -> level + "th-level";
+            case "0", "c" -> "Cantrip";
+            case "1" -> "1st-Level";
+            case "2" -> "2nd-Level";
+            case "3" -> "3rd-Level";
+            default -> level + "th-Level";
         };
     }
 
