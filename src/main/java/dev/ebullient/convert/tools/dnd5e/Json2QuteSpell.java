@@ -93,7 +93,7 @@ public class Json2QuteSpell extends Json2QuteCommon {
         }
 
         List<String> text = new ArrayList<>();
-        appendToText(text, rootNode, "##");
+        appendToText(text, rootNode, null);
         if (SpellFields.entriesHigherLevel.existsIn(rootNode)) {
             maybeAddBlankLine(text);
             appendToText(text, SpellFields.entriesHigherLevel.getFrom(rootNode),
