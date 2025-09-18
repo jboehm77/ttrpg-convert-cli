@@ -148,7 +148,7 @@ public class TextReplacementTest implements JsonSource {
                 "`+3 plus PB` to hit;  *Hit:* 7 (`1d6 + 4`) piercing damage plus 7 (`2d6`) poison damage.",
                 "Perception (`+2`) Perception (`-2`)",
                 "hit display text: +3 to hit",
-                "*Melee Weapon Attack:* `+9` to hit, reach 5 ft., one target. *Hit:* 9 (`1d8 + 5`) piercing damage plus 7 (`2d6`) necrotic damage.");
+                "*Melee Attack Roll:* `+9` to hit, reach 5 ft., one target. *Hit:* 9 (`1d8 + 5`) piercing damage plus 7 (`2d6`) necrotic damage.");
 
         configurator.setUseDiceRoller(DiceRoller.disabled);
         for (int i = 0; i < example.size(); i++) {
@@ -171,7 +171,7 @@ public class TextReplacementTest implements JsonSource {
                 "`+3 plus PB` to hit;  *Hit:* `dice:1d6+4|noform|noparens|avg|text(7)` (`1d6 + 4`) piercing damage plus `dice:2d6|noform|noparens|avg|text(7)` (`2d6`) poison damage.",
                 "Perception (`dice:1d20+2|noform|noparens|text(+2)`) Perception (`dice:1d20-2|noform|noparens|text(-2)`)",
                 "hit display text: +3 to hit",
-                "*Melee Weapon Attack:* `dice:1d20+9|noform|noparens|text(+9)` to hit, reach 5 ft., one target. *Hit:* `dice:1d8+5|noform|noparens|avg|text(9)` (`1d8 + 5`) piercing damage plus `dice:2d6|noform|noparens|avg|text(7)` (`2d6`) necrotic damage.");
+                "*Melee Attack Roll:* `dice:1d20+9|noform|noparens|text(+9)` to hit, reach 5 ft., one target. *Hit:* `dice:1d8+5|noform|noparens|avg|text(9)` (`1d8 + 5`) piercing damage plus `dice:2d6|noform|noparens|avg|text(7)` (`2d6`) necrotic damage.");
 
         configurator.setUseDiceRoller(DiceRoller.enabled);
         for (int i = 0; i < example.size(); i++) {
@@ -201,7 +201,7 @@ public class TextReplacementTest implements JsonSource {
                 "+3 plus PB to hit;  *Hit:* 7 (1d6 + 4) piercing damage plus 7 (2d6) poison damage.",
                 "Perception (+2) Perception (-2)",
                 "hit display text: +3 to hit",
-                "*Melee Weapon Attack:* +9 to hit, reach 5 ft., one target. *Hit:* 9 (1d8 + 5) piercing damage plus 7 (2d6) necrotic damage.");
+                "*Melee Attack Roll:* +9 to hit, reach 5 ft., one target. *Hit:* 9 (1d8 + 5) piercing damage plus 7 (2d6) necrotic damage.");
 
         // Now we'll indicate that we're within a trait (for a statblock)
         boolean pushed = parseState().pushTrait();
