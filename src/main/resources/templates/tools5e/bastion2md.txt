@@ -9,21 +9,29 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Bastion"
+BookSource:
+- {resource.source}
 ---
 # {resource.name}
-*{#if resource.prerequisite}Level {resource.level} {/if}Bastion facility*  
+*{#if resource.prerequisite}Level {resource.level} {/if}Bastion facility*{#if resource.hasImages }
+{resource.showPortraitImage}{/if}
 
 {#if resource.prerequisite}
-- **Prerequisites**: {resource.prerequisite}
+- **Prerequisite:** {resource.prerequisite}
 {/if}{#if resource.space }
-- **Space**: {resource.spaceDescription}
+- **Space:** {resource.spaceDescription}
 {/if}{#if resource.hirelings }
-- **Hirelings**: {resource.hirelingDescription}
+- **Hirelings:** {resource.hirelingDescription}
 {/if}{#if resource.orders }
-- **{resource.orders.pluralizeLabel("Order")}**: {resource.orders.join(", ")}
+- **Order:** {resource.orders.join(", ")}
 {/if}{#if resource.text }
 
 {resource.text}
 {/if}
+{#if resource.hasMoreImages }
 
-*Source: {resource.source}*
+{resource.showMoreImages}
+{/if}
+
+*Sources: {resource.source}*

@@ -9,9 +9,12 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Deck"
+BookSource:
+- {resource.source}
 ---
-# {resource.name}
-*Source: {resource.source}*  
+# {resource.name}{#if resource.hasImages }
+{resource.showPortraitImage}{/if}
 
 {resource.text}
 
@@ -23,3 +26,8 @@ aliases:
 {card.text}
 
 {/for}
+{#if resource.hasMoreImages }
+{resource.showMoreImages}
+
+{/if}
+*Sources: {resource.source}*

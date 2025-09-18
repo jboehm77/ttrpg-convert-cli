@@ -9,15 +9,23 @@ tags:
 {/for}{/if}
 aliases:
 - {resource.name}
+SourceType: "Reward"
+BookSource:
+- {resource.source}
 ---
 # {resource.name}
 {#if resource.detail }*{resource.detail}*  
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
 {/if}{#if resource.signatureSpells }
 
-- **Signature Spells**: {resource.signatureSpells}
+- **Signature Spells:** {resource.signatureSpells}
 {/if}{#if resource.text }
 
 {resource.text}
+{/if}{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
 {/if}
 
-*Source: {resource.source}* 
+*Sources: {resource.source}*
