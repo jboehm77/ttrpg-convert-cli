@@ -303,7 +303,7 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
 
             result = attackPattern.matcher(result).replaceAll((match) -> {
                 List<String> type = new ArrayList<>();
-                String method = "";
+                // String method = "";
                 // render.js Renderer.attackTagToFull
                 // const ptType = tags.includes("m") ? "Melee " : tags.includes("r") ? "Ranged "
                 // : tags.includes("g") ? "Magical " : tags.includes("a") ? "Area " : "";
@@ -315,26 +315,26 @@ public interface JsonTextReplacement extends JsonTextConverter<Tools5eIndexType>
                 if (match.group(1).contains("r")) {
                     type.add("Ranged ");
                 }
-                if (match.group(1).contains("g")) {
-                    type.add("Magical ");
-                }
+                // if (match.group(1).contains("g")) {
+                //     type.add("Magical ");
+                // }
                 if (match.group(1).contains("a")) {
                     type.add("Area ");
                 }
 
-                if (match.group(1).contains("w")) {
-                    method = "Weapon ";
-                } else if (match.group(1).contains("s")) {
-                    method = "Spell ";
-                } else if (match.group(1).contains("p")) {
-                    method = "Power ";
-                }
+                // if (match.group(1).contains("w")) {
+                //     method = "Weapon ";
+                // } else if (match.group(1).contains("s")) {
+                //     method = "Spell ";
+                // } else if (match.group(1).contains("p")) {
+                //     method = "Power ";
+                // }
 
-                if (method.isBlank()) {
-                    return String.format("*%sAttack Roll:*", joinConjunct(", ", " or ", type));
-                } else {
-                    return String.format("*%s%sAttack:*", joinConjunct(", ", " or ", type), method);
-                }
+                // if (method.isBlank()) {
+                return String.format("*%sAttack Roll:*", joinConjunct(", ", "or ", type));
+                // } else {
+                //     return String.format("*%s%sAttack:*", joinConjunct(", ", " or ", type), method);
+                // }
             });
 
             try {
