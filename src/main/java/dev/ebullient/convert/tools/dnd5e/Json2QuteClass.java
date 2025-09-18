@@ -143,8 +143,8 @@ public class Json2QuteClass extends Json2QuteCommon {
                 if (scIsClassic && !getSources().isClassic()) {
                     // insert warning about mixed edition content
                     text.add(0,
-                            "> This subclass is from a different game edition. You will need to do some adjustment to resolve differences.");
-                    text.add(0, "> [!caution] Mixed edition content");
+                            "> This Subclass is from a different game edition. For a given Subclass Feature, you may gain that Feature at a different Level from the one specified in the Feature.");
+                    text.add(0, "> [!important] Mixed-Edition Content");
                 }
 
                 maybeAddBlankLine(text);
@@ -430,7 +430,7 @@ public class Json2QuteClass extends Json2QuteCommon {
             Map<Integer, LevelProgression> levels,
             List<String> footnotes) {
         List<String> text = new ArrayList<>();
-        text.add("[!tldr] Class and Feature Progression");
+        text.add("[!tldr]- Class and Feature Progression");
         text.add("");
         text.add("<table class=\"class-progression\">");
         text.add("<thead>");
@@ -645,7 +645,7 @@ public class Json2QuteClass extends Json2QuteCommon {
                 && ClassFields.defaultEquipment.existsIn(startingEquipment)) {
             // Older default format.
             if (ClassFields.additionalFromBackground.booleanOrDefault(startingEquipment, false)) {
-                text.add("You start with the following items, plus anything provided by your background.");
+                text.add("You start with the following items, plus anything provided by your Background.");
                 text.add("");
             }
 
@@ -656,7 +656,7 @@ public class Json2QuteClass extends Json2QuteCommon {
             String goldAlternative = ClassFields.goldAlternative.getTextOrNull(startingEquipment);
             if (isPresent(goldAlternative)) {
                 text.add("");
-                text.add("Alternatively, you may start with %s gp to buy your own equipment."
+                text.add("Alternatively, you may start with %s GP to buy your own equipment."
                         .formatted(replaceText(goldAlternative)));
             }
         } else {
@@ -713,7 +713,12 @@ public class Json2QuteClass extends Json2QuteCommon {
         void appendLink(JsonSource converter, List<String> text, String pageSource) {
             converter.maybeAddBlankLine(text);
             String x = linkifier().decoratedFeatureTypeName(cfSources, cfNode);
-            text.add(String.format("[%s](#%s)", x, toAnchorTag(x + " (Level " + level() + ")")));
+            String level = (x.startsWith("Channel Divinity: ")
+                    && keyData.parentName()
+                            .matches("[Aa]rcana|[Dd]eath|[Ff]orge|[Gg]rave|[Nn]ature|[Oo]rder|[Pp]eace|[Tt]empest|[Tt]wilight"))
+                                    ? "2"
+                                    : level();
+            text.add(String.format("[%s](#%s)", x, toAnchorTag("Level " + level + ": " + x)));
         }
 
         public void appendListItemText(JsonSource converter, List<String> text, String pageSource) {
@@ -760,11 +765,11 @@ public class Json2QuteClass extends Json2QuteCommon {
                         text.add("## Subclass Features");
                         if (isEntries) {
                             converter.maybeAddBlankLine(text);
-                            text.add("### " + name + " (Level " + level() + ")");
+                            text.add("### Level 1: " + name);
                             entry = SourceField.entries.getFrom(entry);
                         } else if (isSpellsTable) {
                             converter.maybeAddBlankLine(text);
-                            text.add("### Domain Spells (Level " + level() + ")");
+                            text.add("### Level 1: Domain Spells");
                         }
                         hasHeading = true;
                     }
@@ -778,9 +783,14 @@ public class Json2QuteClass extends Json2QuteCommon {
 
         void appendText(JsonSource converter, List<String> text, String primarySource) {
             boolean pushed = converter.parseState().pushFeatureType();
+            String level = (linkifier().decoratedFeatureTypeName(cfSources, cfNode).startsWith("Channel Divinity: ")
+                    && keyData.parentName()
+                            .matches("[Aa]rcana|[Dd]eath|[Ff]orge|[Gg]rave|[Nn]ature|[Oo]rder|[Pp]eace|[Tt]empest|[Tt]wilight"))
+                                    ? "2"
+                                    : level();
             try {
                 converter.maybeAddBlankLine(text);
-                text.add("### " + linkifier().decoratedFeatureTypeName(cfSources, cfNode) + " (Level " + level() + ")");
+                text.add("### Level " + level + ": " + linkifier().decoratedFeatureTypeName(cfSources, cfNode));
                 if (!cfSources.primarySource().equalsIgnoreCase(primarySource)) {
                     text.add(converter.getLabeledSource(cfSources));
                 }
@@ -986,7 +996,7 @@ public class Json2QuteClass extends Json2QuteCommon {
 
         String toHtmlLink(String x, String level) {
             return String.format("<a href='#%s' class='internal-link'>%s</a>",
-                    x + " (Level " + level + ")", x);
+                    "Level " + level + ": " + x, x);
         }
     }
 
@@ -1021,7 +1031,7 @@ public class Json2QuteClass extends Json2QuteCommon {
             if (armorMatcher.find()) {
                 armor = uppercaseFirst(armorMatcher.group());
                 if (humanoidClause.contains("shields")) {
-                    armor += "; and shields if [humanoid](#%s)".formatted(toAnchorTag("Bonus Proficiencies (Level 1)"));
+                    armor += "; and Shields if [Humanoid](#%s)".formatted(toAnchorTag("Level 1: Bonus Proficiencies"));
                 }
             }
 
@@ -1038,17 +1048,17 @@ public class Json2QuteClass extends Json2QuteCommon {
             // Only present in the humanoid clause
             Matcher toolMatcher = sidekickTools.matcher(humanoidClause);
             if (toolMatcher.find()) {
-                tools = "%s if [humanoid](#%s)".formatted(
+                tools = "%s if [Humanoid](#%s)".formatted(
                         uppercaseFirst(toolMatcher.group()),
-                        toAnchorTag("Bonus Proficiencies (Level 1)"));
+                        toAnchorTag("Level 1: Bonus Proficiencies"));
             }
 
             // Only present in the humanoid clause
             Matcher weaponsMatcher = sidekickWeapons.matcher(humanoidClause);
             if (weaponsMatcher.find()) {
-                weapons = "%s if [humanoid](#%s)".formatted(
+                weapons = "%s if [Humanoid](#%s)".formatted(
                         uppercaseFirst(weaponsMatcher.group()),
-                        toAnchorTag("Bonus Proficiencies (Level 1)"));
+                        toAnchorTag("Level 1: Bonus Proficiencies"));
             }
         }
 

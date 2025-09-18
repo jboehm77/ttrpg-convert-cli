@@ -463,7 +463,7 @@ public interface JsonTextConverter<T extends IndexType> {
                 return true;
             } else {
                 name = name.replace(":", "");
-                name = "**" + name + ".** ";
+                name = "***" + name + ".*** ";
                 inner.set(0, name + inner.get(0));
                 return true;
             }
