@@ -386,7 +386,7 @@ public class FilterSubsetMixedTest {
         assertThat(dirgeSinger).exists();
 
         String content = Files.readString(dirgeSinger);
-        assertThat(content).contains("Mixed edition content");
+        assertThat(content).contains("Mixed-Edition Content");
     }
 
     @Test

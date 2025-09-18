@@ -2,6 +2,7 @@ package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.toAnchorTag;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -38,13 +39,13 @@ public record ItemMastery(
                 : index.customContentIncluded();
 
         if (!included) {
-            return linkText;
+            return toTitleCase(linkText);
         }
         String path = TtrpgConfig.getConfig().splitRules()
                 ? "item-mastery/item-mastery.md"
                 : "item-mastery.md";
         return "[%s](%s%s#%s)".formatted(
-                linkText, index.rulesVaultRoot(), path, toAnchorTag(name));
+                toTitleCase(linkText), index.rulesVaultRoot(), path, toAnchorTag(name));
     }
 
     public static final Comparator<ItemMastery> comparator = Comparator.comparing(ItemMastery::name);

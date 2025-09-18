@@ -2,7 +2,7 @@ package dev.ebullient.convert.tools.dnd5e;
 
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.joinConjunct;
-import static dev.ebullient.convert.StringUtil.toOrdinal;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.nio.file.Path;
@@ -204,7 +204,7 @@ public class Json2QuteCommon implements JsonSource {
                                     .sorted(SkillOrAbility.comparator)
                                     .map(x -> x.value())
                                     .toList();
-                            return String.format("%s %s or higher",
+                            return String.format("%s %s+",
                                     joinConjunct(" and ", abs),
                                     e.getKey());
                         })
@@ -223,7 +223,7 @@ public class Json2QuteCommon implements JsonSource {
                 abilityOptions);
 
         return joined + (allValuesEqual != null
-                ? " " + allValuesEqual.asText() + " or higher"
+                ? " " + allValuesEqual.asText() + "+"
                 : "");
     }
 
@@ -324,7 +324,7 @@ public class Json2QuteCommon implements JsonSource {
             tui().errorf("levelPrereq: Array parameter");
 
         if (levelPrereq.isNumber()) {
-            return toOrdinal(levelPrereq.asInt());
+            return "Level " + levelPrereq.asInt() + "+";
         }
 
         String level = Tools5eFields.level.getTextOrThrow(levelPrereq);
@@ -333,7 +333,7 @@ public class Json2QuteCommon implements JsonSource {
 
         // neither class nor subclass is defined
         if (classNode == null && subclassNode == null) {
-            return toOrdinal(level);
+            return "Level " + level + "+";
         }
 
         boolean isLevelVisible = !"1".equals(level); // hide implied first level
@@ -353,7 +353,7 @@ public class Json2QuteCommon implements JsonSource {
         }
 
         String levelPart = isLevelVisible
-                ? String.format("Level %s", level)
+                ? String.format("Level %s+", level)
                 : "";
 
         return levelPart
@@ -615,7 +615,7 @@ public class Json2QuteCommon implements JsonSource {
             JsonNode v = speedNode.get(k);
             JsonNode altV = alternate == null ? null : alternate.get(k);
             if (v != null) {
-                String prefix = "walk".equals(k) ? "" : k + " ";
+                String prefix = "walk".equals(k) ? "" : uppercaseFirst(k) + " ";
                 speed.add(prefix + speedValue(k, v, includeZeroWalk));
                 if (altV != null && altV.isArray()) {
                     altV.forEach(x -> speed.add(prefix + speedValue(k, x, includeZeroWalk)));
@@ -685,10 +685,10 @@ public class Json2QuteCommon implements JsonSource {
                 }
             }
             if (!details.isEmpty()) {
-                acHp.acText = replaceText(String.join("; ", details));
+                acHp.acText = toTitleCase(replaceText(String.join("; ", details)));
             }
         } else if (MonsterFields.special.existsIn(acNode)) {
-            acHp.acText = MonsterFields.special.replaceTextFrom(acNode, this);
+            acHp.acText = toTitleCase(MonsterFields.special.replaceTextFrom(acNode, this));
         } else {
             tui().warnf(Msg.UNKNOWN, "Unknown armor class in monster %s: %s", sources.getKey(), acNode.toPrettyString());
         }
@@ -836,9 +836,9 @@ public class Json2QuteCommon implements JsonSource {
 
     private String textValue(VulnerabilityFields field, String text) {
         if (field == VulnerabilityFields.conditionImmune) {
-            return linkify(Tools5eIndexType.condition, text);
+            return linkify(Tools5eIndexType.condition, uppercaseFirst(text));
         }
-        return text;
+        return uppercaseFirst(text);
     }
 
     List<NamedText> collectSortedTraits(JsonNode array) {

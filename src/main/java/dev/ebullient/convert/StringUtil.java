@@ -27,7 +27,7 @@ import java.util.stream.Collector;
 public class StringUtil {
     final static Set<String> lowercaseWords = Set.of(
             "a", "an", "the", "at", "by", "for", "in", "of", "on", "to", "with",
-            "but", "nor", "so", "yet", "and", "or");
+            "but", "nor", "so", "yet", "and", "or", "without", "from");
 
     final static Set<String> conjunctionArticle = Set.of(
             "a", "an", "the", "and", "or");
