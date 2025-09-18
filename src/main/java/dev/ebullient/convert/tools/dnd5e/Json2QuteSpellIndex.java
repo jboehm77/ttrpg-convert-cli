@@ -110,7 +110,7 @@ public class Json2QuteSpellIndex extends Json2QuteCommon {
             text.add("## " + levelHeading);
             text.add("");
             for (var entry : levelSpells) {
-                text.add("- " + entry.linkify() + (entry.isExpanded(className) ? " (\\*)" : ""));
+                text.add("- " + entry.linkify());
             }
         }
         maybeAddBlankLine(text);
