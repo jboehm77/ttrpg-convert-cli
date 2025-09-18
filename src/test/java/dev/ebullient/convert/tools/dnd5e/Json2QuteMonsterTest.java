@@ -48,12 +48,12 @@ public class Json2QuteMonsterTest {
 
         Json2QuteMonster json2Qute = new Json2QuteMonster(index, Tools5eIndexType.monster, source);
 
-        assertThat(json2Qute.creatureType).isEqualTo("Choose one of celestial or fiend");
+        assertThat(json2Qute.creatureType).isEqualTo("Choose one of Celestial or Fiend");
         assertThat(json2Qute.subtype).isNull();
 
         QuteMonster monster = (QuteMonster) json2Qute.build();
-        assertThat(monster.type).isEqualTo("Choose one of celestial or fiend");
-        assertThat(monster.getFullType()).isEqualTo("creature (choose one of celestial or fiend)");
+        assertThat(monster.type).isEqualTo("Choose one of Celestial or Fiend");
+        assertThat(monster.getFullType()).isEqualTo("Creature (choose one of Celestial or Fiend)");
 
         JsonNode withTags = Tui.MAPPER.readTree("""
                 {
@@ -63,11 +63,11 @@ public class Json2QuteMonsterTest {
                 }
                 """);
         Json2QuteMonster withTagsJson2Qute = new Json2QuteMonster(index, Tools5eIndexType.monster, withTags);
-        assertThat(withTagsJson2Qute.creatureType).isEqualTo("Choose one of celestial or fiend");
-        assertThat(withTagsJson2Qute.subtype).isEqualTo("titan");
+        assertThat(withTagsJson2Qute.creatureType).isEqualTo("Choose one of Celestial or Fiend");
+        assertThat(withTagsJson2Qute.subtype).isEqualTo("Titan");
 
         QuteMonster withTagsMonster = (QuteMonster) withTagsJson2Qute.build();
-        assertThat(withTagsMonster.getFullType()).isEqualTo("creature (choose one of celestial or fiend) (titan)");
+        assertThat(withTagsMonster.getFullType()).isEqualTo("Creature (choose one of Celestial or Fiend) (Titan)");
 
         JsonNode withPrefixedTag = Tui.MAPPER.readTree("""
                 {
@@ -77,7 +77,7 @@ public class Json2QuteMonsterTest {
                 }
                 """);
         Json2QuteMonster withPrefixedTagJson2Qute = new Json2QuteMonster(index, Tools5eIndexType.monster, withPrefixedTag);
-        assertThat(withPrefixedTagJson2Qute.subtype).isEqualTo("former titan");
+        assertThat(withPrefixedTagJson2Qute.subtype).isEqualTo("Former Titan");
     }
 
     @Test
@@ -92,10 +92,10 @@ public class Json2QuteMonsterTest {
 
         Json2QuteMonster json2Qute = new Json2QuteMonster(index, Tools5eIndexType.monster, source);
 
-        assertThat(json2Qute.subtype).isEqualTo("flesh");
+        assertThat(json2Qute.subtype).isEqualTo("Flesh");
 
         QuteMonster monster = (QuteMonster) json2Qute.build();
-        assertThat(monster.getFullType()).isEqualTo("construct (flesh)");
+        assertThat(monster.getFullType()).isEqualTo("Construct (Flesh)");
     }
 
     @Test
@@ -195,8 +195,8 @@ public class Json2QuteMonsterTest {
 
         JsonNode celestial = variants.get(1);
         Json2QuteMonster json2Qute = new Json2QuteMonster(index, Tools5eIndexType.monster, celestial);
-        assertThat(json2Qute.creatureType).isEqualTo("celestial");
-        assertThat(json2Qute.subtype).isEqualTo("titan");
+        assertThat(json2Qute.creatureType).isEqualTo("Celestial");
+        assertThat(json2Qute.subtype).isEqualTo("Titan");
     }
 
     @Test

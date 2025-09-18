@@ -99,9 +99,9 @@ public class Json2QuteRecipeTest implements JsonSource {
         appendList(text, ingredients, ListType.unordered);
 
         assertThat(text).containsExactly(
-                "- **Cinnamon Whipped Cream.** ½ cup heavy cream  ",
-                "    1 tablespoon sugar  ",
-                "- ½ cup dark rum  ");
+                "- ***Cinnamon Whipped Cream.*** ½ cup heavy cream",
+                "    1 tablespoon sugar",
+                "- ½ cup dark rum");
     }
 
     @Test
@@ -125,9 +125,9 @@ public class Json2QuteRecipeTest implements JsonSource {
         appendList(text, items, ListType.unordered);
 
         assertThat(text).containsExactly(
-                "- **Notes.** First paragraph.  ",
+                "- ***Notes.*** First paragraph.",
                 "",
-                "    Second paragraph.  ");
+                "    Second paragraph.");
     }
 
     @Override

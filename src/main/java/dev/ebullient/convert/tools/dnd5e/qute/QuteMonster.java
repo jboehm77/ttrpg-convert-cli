@@ -45,9 +45,9 @@ public class QuteMonster extends Tools5eQuteBase {
     public final boolean isNpc;
     /** Creature size (capitalized) */
     public final String size;
-    /** Creature type (lowercase) */
+    /** Creature type (capitalized) */
     public final String type;
-    /** Creature subtype (lowercase) */
+    /** Creature subtype (capitalized) */
     public final String subtype;
     /** Creature alignment */
     public final String alignment;
@@ -227,7 +227,7 @@ public class QuteMonster extends Tools5eQuteBase {
     /** Creature type (lowercase) and subtype if present: `{resource.type} ({resource.subtype})` */
     public String getFullType() {
         if (type != null && type.startsWith("Choose one of ")) {
-            return "creature (choose one of " + type.substring("Choose one of ".length()) + ")"
+            return "Creature (choose one of " + type.substring("Choose one of ".length()) + ")"
                     + ((subtype == null || subtype.isEmpty()) ? "" : " (" + subtype + ")");
         }
         return type + ((subtype == null || subtype.isEmpty()) ? "" : " (" + subtype + ")");
@@ -421,7 +421,7 @@ public class QuteMonster extends Tools5eQuteBase {
         addUnlessEmpty(map, "condition_immunities", immuneResist.conditionImmune);
         addUnlessEmpty(map, "gear", gear);
         addUnlessEmpty(map, "treasure", treasure);
-        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "passive Perception " + passive);
+        map.put("senses", (senses.isBlank() ? "" : senses + ", ") + "Passive Perception " + passive);
         map.put("languages", languages);
         addUnlessEmpty(map, "cr", cr);
 
@@ -639,7 +639,7 @@ public class QuteMonster extends Tools5eQuteBase {
                 appendList(text, "Constant", fixed.get("constant"));
             }
             if (fixed.containsKey("will") && !hidden.contains("will")) {
-                appendList(text, "At will", fixed.get("will"));
+                appendList(text, "At Will", fixed.get("will"));
             }
             for (var duration : DurationType.values()) {
                 String key = duration.name();
@@ -671,7 +671,7 @@ public class QuteMonster extends Tools5eQuteBase {
                                 boolean isEach = num.endsWith("e");
                                 String value = String.format(duration.durationText, num.replace("e", ""));
                                 return isEach
-                                        ? value + " each"
+                                        ? value + " Each"
                                         : value;
                             };
                             appendList(text, f, v);
@@ -722,7 +722,6 @@ public class QuteMonster extends Tools5eQuteBase {
             if (spells == null || spells.isEmpty()) {
                 return;
             }
-            maybeAddBlankLine(text);
             text.add(String.format("**%s:** %s", title, String.join(", ", spells)));
         }
 
@@ -1093,14 +1092,14 @@ public class QuteMonster extends Tools5eQuteBase {
     @TemplateData
     public enum DurationType {
         recharge("{@recharge %s}"),
-        legendary("%s legendary action"),
-        charges("%s charge"),
-        rest("%s/rest"),
-        restLong("%s/long rest"),
-        daily("%s/day"),
-        weekly("%s/week"),
-        monthly("%s/month"),
-        yearly("%s/year"),;
+        legendary("%s Legendary Action"),
+        charges("%s Charge"),
+        rest("%s/Rest"),
+        restLong("%s/Long Rest"),
+        daily("%s/Day"),
+        weekly("%s/Week"),
+        monthly("%s/Month"),
+        yearly("%s/Year"),;
 
         final String durationText;
 

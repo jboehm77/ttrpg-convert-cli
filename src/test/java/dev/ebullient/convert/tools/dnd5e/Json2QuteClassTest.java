@@ -90,15 +90,15 @@ public class Json2QuteClassTest {
         // The options list should link to each choice rather than inlining its full text there
         assertThat(qute.text)
                 .describedAs("options list should contain links to the choice features, not their full bodies inline")
-                .contains("[Test Choice A](#Test%20Choice%20A%20(Level%201))")
-                .contains("[Test Choice B](#Test%20Choice%20B%20(Level%201))");
+                .contains("[Test Choice A](#Level%201%20Test%20Choice%20A)")
+                .contains("[Test Choice B](#Level%201%20Test%20Choice%20B)");
 
         // Each linked choice must have a real heading to resolve against (this is the anchor
-        // text a link above points at: "Test Choice A (Level 1)")
+        // text a link above points at: "Level 1: Test Choice A")
         assertThat(qute.text)
                 .describedAs("each choice referenced from the options list must get its own linkable heading")
-                .contains("### Test Choice A (Level 1)")
-                .contains("### Test Choice B (Level 1)")
+                .contains("### Level 1: Test Choice A")
+                .contains("### Level 1: Test Choice B")
                 .contains("You gain Choice A benefits.")
                 .contains("You gain Choice B benefits.");
     }

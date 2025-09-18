@@ -275,7 +275,7 @@
                     <disableNoFonts>true</disableNoFonts>
                     <additionalOptions>
                         <additionalOption>-d</additionalOption>
-                        <additionalOption>${project.basedir}/docs/templates</additionalOption>
+                        <additionalOption>"${project.basedir}/docs/templates"</additionalOption>
                     </additionalOptions>
                     <useStandardDocletOptions>false</useStandardDocletOptions>
                 </configuration>
