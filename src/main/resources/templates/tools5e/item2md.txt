@@ -6,73 +6,88 @@ cssclasses:
 tags:
 {#for tag in resource.tags}
 - {tag}
-{/for}
-{/if}
+{/for}{/if}
 aliases:
 {#each resource.aliases}
 - {it}
 {/each}
+{#if resource.books }
+sources:
+{#for book in resource.books}
+- {book}
+{/for}{/if}
+SourceType: "Magic Item"
 ---
 # {resource.name}
-{#if resource.detail }*{resource.detail}*  {/if}
+{#if resource.detail }*{resource.detail}*
+{/if}{#if resource.hasImages }
+{resource.showPortraitImage}
+{/if}{#if resource.prerequisite || resource.armorClass || resource.damage || resource.properties || resource.strengthRequirement || resource.stealthPenalty || resource.cost || resource.weight }
 
 {#if resource.prerequisite}
-- **Prerequisites**: {resource.prerequisite}
+- **Prerequisite:** {resource.prerequisite}
 {/if}{#if resource.armorClass }
-- **Armor Class**: {resource.armorClass}
+- **Armor Class:** {resource.armorClass}
 {#else if resource.damage }{#if resource.damage2h }
-- **Damage**:
+- **Damage:**
   - One-handed: {resource.damage}
   - Two-handed: {resource.damage2h}
 {#else}
-- **Damage**: {resource.damage}
+- **Damage:** {resource.damage}
 {/if}{#if resource.range }
-- **Range**: {resource.range}
+- **Range:** {resource.range}
 {/if}{/if}{#if resource.properties }
-- **Properties**: {resource.properties}
+- **Properties:** {resource.properties}
+{/if}{#if resource.mastery }
+- **Mastery:** {resource.mastery}
 {/if}{#if resource.strengthRequirement }
-- **Strength**: Requires {resource.strengthRequirement} STR.
+- **Strength:** Requires {resource.strengthRequirement} Strength.
 {/if}{#if resource.stealthPenalty }
-- **Stealth**: The wearer has disadvantage on Stealth (DEX) checks.
+- **Stealth:** Imposes Disadvantage on Dexterity (Stealth) Checks.
 {/if}{#if resource.cost }
-- **Cost**: {resource.cost}
+- **Cost:** {resource.cost}
 {/if}{#if resource.weight }
-- **Weight**: {resource.weight} lbs.
-{/if}{#if resource.text }
+- **Weight:** {resource.weight} lbs.
+{/if}{/if}{#if resource.text }
 
 {resource.text}
+{/if}{#if resource.hasMoreImages }
+
+{resource.showMoreImages}
 {/if}{#if resource.variants }
 
-**Variants**:
-{resource.variantSectionLinks}
+## Variants
 
+{resource.variantSectionLinks}
 {#for variant in resource.variants}
+
 ### {variant.name}
 
 {#if variant.prerequisite}
-- **Prerequisites**: {variant.prerequisite}
+- **Prerequisite:** {variant.prerequisite}
 {/if}{#if variant.armorClass }
-- **Armor Class**: {variant.armorClass}
+- **Armor Class:** {variant.armorClass}
 {#else if variant.damage }{#if variant.damage2h }
-- **Damage**:
+- **Damage:**
   - One-handed: {variant.damage}
   - Two-handed: {variant.damage2h}
 {#else}
-- **Damage**: {variant.damage}
+- **Damage:** {variant.damage}
 {/if}{#if variant.range }
-- **Range**: {variant.range}
+- **Range:** {variant.range}
 {/if}{/if}{#if variant.properties }
-- **Properties**: {variant.properties}
+- **Properties:** {variant.properties}
+{/if}{#if variant.mastery }
+- **Mastery:** {variant.mastery}
 {/if}{#if variant.strengthRequirement }
-- **Strength**: Requires {variant.strengthRequirement} STR.
+- **Strength:** Requires {variant.strengthRequirement} Strength.
 {/if}{#if variant.stealthPenalty }
-- **Stealth**: The wearer has disadvantage on Stealth (DEX) checks.
+- **Stealth:** Imposes Disadvantage on Dexterity (Stealth) Checks.
 {/if}{#if variant.cost }
-- **Cost**: {variant.cost}
+- **Cost:** {variant.cost}
 {/if}{#if variant.weight }
-- **Weight**: {variant.weight} lbs.
+- **Weight:** {variant.weight} lbs.
 {/if}
-
 {/for}
 {/if}
 

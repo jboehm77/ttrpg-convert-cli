@@ -3,6 +3,7 @@ package dev.ebullient.convert.tools.dnd5e;
 import static dev.ebullient.convert.StringUtil.isPresent;
 import static dev.ebullient.convert.StringUtil.join;
 import static dev.ebullient.convert.StringUtil.joinConjunct;
+import static dev.ebullient.convert.StringUtil.toTitleCase;
 import static dev.ebullient.convert.StringUtil.uppercaseFirst;
 
 import java.util.ArrayList;
@@ -204,7 +205,7 @@ public class Json2QuteItem extends Json2QuteCommon {
             if (!wondrous) {
                 return;
             }
-            typeDescription.add("wondrous item" + (tattoo ? " (tattoo)" : ""));
+            typeDescription.add("Wondrous Item" + (tattoo ? " (Tattoo)" : ""));
             if (tattoo) {
                 ItemTag.wondrous.add(tags, "tattoo");
             }
@@ -212,13 +213,13 @@ public class Json2QuteItem extends Json2QuteCommon {
 
         void addStaff(boolean staff) {
             if (staff) {
-                typeDescription.add("staff");
+                typeDescription.add("Staff");
             }
         }
 
         void addAmmo(boolean ammo) {
             if (ammo) {
-                typeDescription.add("ammunition");
+                typeDescription.add("Ammunition");
             }
         }
 
@@ -235,10 +236,10 @@ public class Json2QuteItem extends Json2QuteCommon {
             }
             ItemTag.weapon.add(tags, weaponCategory);
             baseItemIncluded = isPresent(baseItem);
-            typeDescription.add(weaponCategory
-                    + ((type == null) ? "" : " " + type.name())
-                    + (baseItemIncluded ? " (" + baseItem + ")" : ""));
-            subTypeDescription.add(weaponCategory + " weapon");
+            typeDescription.add(toTitleCase(weaponCategory)
+                    + ((type == null) ? "" : " " + toTitleCase(type.name()))
+                    + (baseItemIncluded ? " (" + toTitleCase(baseItem) + ")" : ""));
+            subTypeDescription.add(toTitleCase(weaponCategory) + " Weapon");
         }
 
         void addStaffMeleeNote(boolean staff, ItemType itemType, ItemType itemTypeAlt) {
@@ -246,7 +247,7 @@ public class Json2QuteItem extends Json2QuteCommon {
                 // "M" --> Type: Melee weapon
                 // DMG p140: "Unless a staff's description says otherwise, a staff can be used
                 // as a quarterstaff."
-                subTypeDescription.add("melee weapon");
+                subTypeDescription.add("Simple Melee Weapon");
             }
         }
 
@@ -265,32 +266,32 @@ public class Json2QuteItem extends Json2QuteCommon {
             List<String> target = isSubType ? subTypeDescription : typeDescription;
 
             if (EncodedType.S.typeIn(type, null)) {
-                target.add("armor (" + linkify(Tools5eIndexType.item, "shield|phb") + ")");
+                target.add("Armor (" + linkify(Tools5eIndexType.item, "shield|phb") + ")");
             } else if (!baseItemIncluded && isPresent(baseItem) && !isPresent(weaponCategory)) {
-                target.add(fullType + " (" + baseItem + ")");
+                target.add(toTitleCase(fullType) + " (" + toTitleCase(baseItem) + ")");
             } else if (EncodedType.GV.not(type) && !isPresent(weaponCategory)) {
-                target.add(fullType);
+                target.add(toTitleCase(fullType));
             }
             subTypeDescription.add(type.linkify());
         }
 
         void addFirearm(boolean firearm) {
             if (firearm) {
-                subTypeDescription.add("firearm");
+                subTypeDescription.add("Firearm");
             }
         }
 
         void addPoison(boolean poison, String poisonTypes, Set<ItemProperty> itemProperties) {
             if (poison) {
                 itemProperties.add(ItemProperty.POISON);
-                typeDescription.add("poison" + (isPresent(poisonTypes) ? " (" + poisonTypes + ")" : ""));
+                typeDescription.add("Poison" + (isPresent(poisonTypes) ? " (" + poisonTypes + ")" : ""));
             }
         }
 
         void addCursed(boolean cursed, Set<ItemProperty> itemProperties) {
             if (cursed) {
                 itemProperties.add(ItemProperty.CURSED);
-                typeDescription.add("cursed item");
+                typeDescription.add("Cursed Item");
             }
         }
 
@@ -312,7 +313,7 @@ public class Json2QuteItem extends Json2QuteCommon {
                         .replaceAll("[()]", "") // unknown (magic) -> unknown magic
                         .split(" "));
                 if (!hiddenRarity.contains(rarity)) {
-                    detail += (detail.isBlank() ? "" : ", ") + rarity;
+                    detail += (detail.isBlank() ? "" : ", ") + toTitleCase(rarity);
                 }
             }
             if (isPresent(attunement)) {
@@ -321,9 +322,9 @@ public class Json2QuteItem extends Json2QuteCommon {
 
                 detail += (detail.isBlank() ? "" : " ")
                         + switch (attunement) {
-                            case "required" -> "(requires attunement)";
-                            case "optional" -> "(attunement optional)";
-                            default -> "(requires attunement " + attunement + ")";
+                            case "required" -> "(requires Attunement)";
+                            case "optional" -> "(Attunement optional)";
+                            default -> "(requires Attunement " + attunement + ")";
                         };
             }
             return detail;
@@ -391,7 +392,7 @@ public class Json2QuteItem extends Json2QuteCommon {
                         text.add(replaceText(input));
                     }
                 } else {
-                    appendToText(text, entry, "##");
+                    appendToText(text, entry, null);
                 }
             }
         }
@@ -439,9 +440,9 @@ public class Json2QuteItem extends Json2QuteCommon {
         // Class,
         // but it also does not penalize you if your Dexterity modifier is negative.
         if (EncodedType.LA.typeIn(type, typeAlt)) {
-            ac += " + Dex modifier";
+            ac += " + Dexterity Modifier";
         } else if (EncodedType.MA.typeIn(type, typeAlt)) {
-            ac += " + Dex modifier (max of +2)";
+            ac += " + Dexterity Modifier (max of +2)";
         }
         return ac;
     }
